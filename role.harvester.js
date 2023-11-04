@@ -56,12 +56,11 @@ function getEnergy(creep) {
             let result = creep.moveTo(creep.memory.targetSource);
             console.log("creep " + creep.name + " is moving to source: " + result);
         }
-
-        // if the creep is full, change its state to RETURNING_ENERGY
-        if (creep.store.getFreeCapacity() == 0) {
-            creep.memory.state = 'RETURNING_ENERGY';
-            console.log("creep " + creep.name + " is full");
-        }
+    }
+    // if the creep is full, change its state to RETURNING_ENERGY
+    else (creep.store.getFreeCapacity() == 0) {
+        creep.memory.state = 'RETURNING_ENERGY';
+        console.log("creep " + creep.name + " is full");
     }
 }
 
