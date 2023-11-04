@@ -16,7 +16,7 @@ var roleHarvester = {
         }
 
         // set the target source as the creep's target
-        creep.memory.targetSource = targetSource.id;
+        creep.memory.targetSource = targetSource;
 
         // END META -------------------------------------------------------------
 
@@ -40,7 +40,7 @@ function getEnergy(creep) {
         // if the creep is not at the target source, move to it
         let result = creep.harvest(creep.memory.targetSource);
         if (result == ERR_NOT_IN_RANGE) {
-            let result = creep.moveTo(Game.getObjectById(creep.memory.targetSource));
+            let result = creep.moveTo(creep.memory.targetSource);
             console.log("creep " + creep.name + " is moving to source: " + result);
         }
 
