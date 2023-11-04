@@ -41,7 +41,7 @@ function getEnergy(creep) {
         }
         // if the creep is at the target source, harvest from it
         else {
-            creep.harvest(Game.getObjectById(creep.memory.targetSource));
+            creep.harvest(creep.memory.targetSource);
         }
 
         // if the creep is full, change its state to RETURNING_ENERGY
