@@ -39,13 +39,13 @@ function getEnergy(creep) {
     if (creep.store.getFreeCapacity() > 0) {
         // if the creep is not at the target source, move to it
         if (creep.pos.getRangeTo(creep.memory.targetSource) > 1) {
-            creep.moveTo(Game.getObjectById(creep.memory.targetSource));
-            console.log("creep " + creep.name + " is moving to source");
+            let result = creep.moveTo(Game.getObjectById(creep.memory.targetSource));
+            console.log("creep " + creep.name + " is moving to source: " + result);
         }
         // if the creep is at the target source, harvest from it
         else {
-            creep.harvest(creep.memory.targetSource);
-            console.log("creep " + creep.name + " is harvesting");
+            let result = creep.harvest(creep.memory.targetSource);
+            console.log("creep " + creep.name + " is harvesting: " + result);
         }
 
         // if the creep is full, change its state to RETURNING_ENERGY
@@ -59,13 +59,13 @@ function getEnergy(creep) {
 function returnEnergy(creep) {
     // if the creep is not at the target spawn, move to it
     if (creep.pos.findInRange(FIND_MY_SPAWNS, 1).length == 0) {
-        creep.moveTo(Game.spawns[creep.memory.spawner]);
-        console.log("creep " + creep.name + " is moving to spawn");
+        let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
+        console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
     // if the creep is at the target spawn, transfer energy to it
     else {
-        creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
-        console.log("creep " + creep.name + " is transferring energy");
+        let result = creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
+        console.log("creep " + creep.name + " is transferring energy: " + result);
     }
 
     // if the creep is empty, change its state to GETTING_ENERGY
