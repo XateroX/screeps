@@ -24,9 +24,11 @@ var roleHarvester = {
         // if the creeps state is GETTING_ENERGY, move to the source and harvest from it
         if (state == 'GETTING_ENERGY') {
             getEnergy(creep);
+            console.log("creep " + creep.name + " is getting energy");
         }
         else if (state == 'RETURNING_ENERGY') {
             returnEnergy(creep);
+            console.log("creep " + creep.name + " is returning energy");
         }
     }
 };
@@ -38,15 +40,18 @@ function getEnergy(creep) {
         // if the creep is not at the target source, move to it
         if (creep.pos.getRangeTo(creep.memory.targetSource) > 1) {
             creep.moveTo(Game.getObjectById(creep.memory.targetSource));
+            console.log("creep " + creep.name + " is moving to source");
         }
         // if the creep is at the target source, harvest from it
         else {
             creep.harvest(creep.memory.targetSource);
+            console.log("creep " + creep.name + " is harvesting");
         }
 
         // if the creep is full, change its state to RETURNING_ENERGY
         if (creep.store.getFreeCapacity() == 0) {
             creep.memory.state = 'RETURNING_ENERGY';
+            console.log("creep " + creep.name + " is full");
         }
     }
 }
@@ -55,15 +60,18 @@ function returnEnergy(creep) {
     // if the creep is not at the target spawn, move to it
     if (creep.pos.findInRange(FIND_MY_SPAWNS, 1).length == 0) {
         creep.moveTo(Game.spawns[creep.memory.spawner]);
+        console.log("creep " + creep.name + " is moving to spawn");
     }
     // if the creep is at the target spawn, transfer energy to it
     else {
         creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
+        console.log("creep " + creep.name + " is transferring energy");
     }
 
     // if the creep is empty, change its state to GETTING_ENERGY
     if (creep.store.getUsedCapacity() == 0) {
         creep.memory.state = 'GETTING_ENERGY';
+        console.log("creep " + creep.name + " is empty");
     }
 }
 
