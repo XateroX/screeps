@@ -58,7 +58,7 @@ function getEnergy(creep) {
         }
     }
     // if the creep is full, change its state to RETURNING_ENERGY
-    else (creep.store.getFreeCapacity() == 0) {
+    else {
         creep.memory.state = 'RETURNING_ENERGY';
         console.log("creep " + creep.name + " is full");
     }
