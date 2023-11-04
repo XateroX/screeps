@@ -38,7 +38,9 @@ function getEnergy(creep) {
     // else, go to spawn and transfer energy
     if (creep.store.getFreeCapacity() > 0) {
         // if the creep is not at the target source, move to it
-        if (creep.pos.getRangeTo(creep.memory.targetSource) > 1) {
+        let distance = creep.pos.getRangeTo(creep.memory.targetSource)
+        console.log("creep " + creep.name + " is " + distance + " away from source");
+        if (distance > 1) {
             let result = creep.moveTo(Game.getObjectById(creep.memory.targetSource));
             console.log("creep " + creep.name + " is moving to source: " + result);
         }
