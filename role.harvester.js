@@ -36,7 +36,7 @@ function getEnergy(creep) {
     // else, go to spawn and transfer energy
     if (creep.store.getFreeCapacity() > 0) {
         // if the creep is not at the target source, move to it
-        if (creep.pos.findInRange(FIND_SOURCES, 1).length == 0) {
+        if (creep.pos.getRangeTo(creep.memory.targetSource) > 1) {
             creep.moveTo(Game.getObjectById(creep.memory.targetSource));
         }
         // if the creep is at the target source, harvest from it
