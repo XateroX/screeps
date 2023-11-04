@@ -9,9 +9,22 @@ var roleHarvester = {
         // find the source which has the least creeps targeting it
         var sources = creep.room.find(FIND_SOURCES);
         var targetSource = sources[0];
-        for (var i = 1; i < sources.length; i++) {
-            if (sources[i].pos.findInRange(FIND_CREEPS, 1).length < targetSource.pos.findInRange(FIND_CREEPS, 1).length) {
+        var targetSourceCreeps = 10000;
+        for (var i = 0; i < sources.length; i++) {
+
+            // find how many creeps are near this source other than this creep (if it is in range)
+            var creepsNearSource = sources[i].pos.findInRange(FIND_MY_CREEPS, 1);
+            var creepsNearSourceCount = 0;
+            for (var j = 0; j < creepsNearSource.length; j++) {
+                if (creepsNearSource[j].name != creep.name) {
+                    creepsNearSourceCount++;
+                }
+            }
+
+            // if this source has less creeps near it than the current target source, set it as the target source
+            if (creepsNearSourceCount < targetSourceCreeps) {
                 targetSource = sources[i];
+                targetSourceCreeps = creepsNearSourceCount;
             }
         }
 
