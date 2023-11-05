@@ -40,9 +40,12 @@ var roleSpawner = {
         // get all sources in the room
         var sources = spawner.room.find(FIND_SOURCES);
 
+        console.log(sources);
+
         // for each one add an entry to memory.sources if there isnt one with that source id already
         for (let i = 0; i < sources.length; i++) {
             let source = sources[i];
+            console.log(source);
             if (!spawner.memory.sources[source.id]) {
                 spawner.memory.sources[source.id] = {
                     id: source.id,
