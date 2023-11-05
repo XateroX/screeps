@@ -35,7 +35,7 @@ var roleHarvester = {
             returnEnergy(creep);
             console.log("creep " + creep.name + " is returning energy");
         }
-        else if (state == 'RETURNING_ENERGY') {
+        else if (state == 'GIVING_TO_RCL') {
             giveToRCL(creep);
             console.log("creep " + creep.name + " is giving energy to the RCL");
         }
@@ -86,10 +86,15 @@ function returnEnergy(creep) {
 
 function giveToRCL(creep) {
     // transfer energy to it
-    let result = creep.transfer(creep.room.controller, RESOURCE_ENERGY);
+    let result = creep.upgradeController(creep.room.controller);
+    console.log(result + " while trying to upgrade")
     if (result == ERR_NOT_IN_RANGE) {
         let result = creep.moveTo(creep.room.controller);
         console.log("creep " + creep.name + " is moving to RCL: " + result);
+    }
+    if (creep.store.getUsedCapacity() == 0) {
+        creep.memory.state = 'GETTING_ENERGY';
+        console.log("creep " + creep.name + " is empty");
     }
 }
 
