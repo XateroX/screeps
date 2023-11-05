@@ -65,13 +65,13 @@ function returnEnergy(creep) {
     let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
     console.log("creep " + creep.name + " is moving to spawner: " + result);
 
-    // if the creep is at the target spawn, transfer energy to it
-    if (result == OK) {
+    // if moveTo results in not moving (you are at the target)
+    if (result != 0) {
         let result = creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
         console.log("creep " + creep.name + " is transferring energy: " + result);
 
         // if the spawner is full, set state to GIVING_TO_RCL
-        if (result != OK) {
+        if (result == ERR_FULL) {
             creep.memory.state = 'GIVING_TO_RCL';
             console.log("creep " + creep.name + " is giving to RCL");
         }
