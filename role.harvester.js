@@ -5,7 +5,6 @@ var roleHarvester = {
         let state = creep.memory.state;
 
         // META - always check for the least-targeted source --------------------
-
         var sources = creep.room.find(FIND_SOURCES);
         var targetSource = sources[0];
         var targetSourceDistance = creep.pos.getRangeTo(targetSource);
@@ -24,7 +23,6 @@ var roleHarvester = {
 
         // set the target source as the creep's target
         creep.memory.targetSource = targetSource;
-
         // END META -------------------------------------------------------------
 
 
@@ -64,6 +62,7 @@ function returnEnergy(creep) {
         let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
         console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
+
     // if the creep is at the target spawn, transfer energy to it
     else {
         let result = creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
