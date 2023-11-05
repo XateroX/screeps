@@ -92,6 +92,7 @@ function getAllCreeps(spawner) {
     let total = 0;
     for (let role in roles) {
         total += roles[role];
+        console.log(roles[role] + " " + role + "s");
     }
     console.log(total + " total creeps");
     return total;
