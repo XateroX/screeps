@@ -42,6 +42,11 @@ var roleSpawner = {
 
         console.log(sources);
 
+        // if there is no memory.sources, create it
+        if (!spawner.memory.sources) {
+            spawner.memory.sources = {};
+        }
+
         // for each one add an entry to memory.sources if there isnt one with that source id already
         for (let i = 0; i < sources.length; i++) {
             let source = sources[i];
