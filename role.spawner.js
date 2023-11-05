@@ -20,11 +20,12 @@ var roleSpawner = {
             all_roles.push(role);
         }
 
+        spawner.memory.roles = {};
+
         // reset all role maps in memory to 0
-        for (let role in spawner.memory.roles) {
+        for (let role in spawner.memory.all_role_names) {
             spawner.memory.roles[role] = 0;
         }
-
 
         // count up all roles and make a dict 
         for (let i = 0; i < all_roles.length; i++) {
@@ -73,6 +74,7 @@ var roleSpawner = {
 function set_constants(spawner) {
     // set constants for the spawner
     spawner.memory.max_spawns = 15;
+    spawner.memory.all_role_names = ['harvester', 'builder', 'upgrader'];
 }
 
 // function to spawn a certain role creep. Args for how many work, move etc modules to have
