@@ -22,6 +22,7 @@ var roleSpawner = {
 
         // count up all roles and make a dict 
         for (let i = 0; i < all_roles.length; i++) {
+            spawner.memory.roles[role] = 0
             let role = all_roles[i];
             if (!spawner.memory.roles[role]) {
                 spawner.memory.roles[role] = 0;
