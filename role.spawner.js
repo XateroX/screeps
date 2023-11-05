@@ -30,6 +30,7 @@ var roleSpawner = {
 
         // if the spawner memory.max_spawns has not been reached, spawn more harvesters
         if (getAllCreeps(spawner) < spawner.memory.max_spawns) {
+            console.log("spawning another creep");
             spawnRole(spawner, { WORK: 1, CARRY: 1, MOVE: 1 }, 'harvester', 'GETTING_ENERGY');
         }
 
@@ -92,6 +93,7 @@ function getAllCreeps(spawner) {
     for (let role in roles) {
         total += roles[role];
     }
+    console.log(total + " total creeps");
     return total;
 }
 
