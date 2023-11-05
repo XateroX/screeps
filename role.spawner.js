@@ -77,13 +77,13 @@ function spawnRole(spawner, module_dict, role, state) {
 }
 
 
-function getAllCreeps(spawn) {
+function getAllCreeps(spawner) {
     // get amount of all creeps made from all roles and return the amount total
-    let roles = spawn.memory.roles;
-    let total = 0;
-    for (let role in roles) {
-        total += roles[role];
-    }
+    //let roles = spawner.memory.roles;
+    //let total = 0;
+    //for (let role in roles) {
+    //    total += roles[role];
+    //}
 }
 
 module.exports = roleSpawner
