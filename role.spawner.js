@@ -11,7 +11,13 @@ var roleSpawner = {
         }
 
         // go through all creeps in game and add their role to the roles dictionary
-        let all_roles = Game.creeps.map(creep => creep.memory.role);
+        let creeps = Game.creeps;
+        let all_roles = [];
+        for (let name in creeps) {
+            let creep = creeps[name];
+            let role = creep.memory.role;
+            all_roles.push(role);
+        }
 
         // count up all roles and make a dict 
         for (let i = 0; i < all_roles.length; i++) {
