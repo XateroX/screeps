@@ -62,13 +62,11 @@ function getEnergy(creep) {
 
 function returnEnergy(creep) {
     // if the creep is not at the target spawn, move to it
-    if (creep.pos.getRangeTo(Game.spawns[creep.memory.spawner]) > 1) {
-        let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
-        console.log("creep " + creep.name + " is moving to spawner: " + result);
-    }
+    let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
+    console.log("creep " + creep.name + " is moving to spawner: " + result);
 
     // if the creep is at the target spawn, transfer energy to it
-    else {
+    if (result == OK) {
         let result = creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
         console.log("creep " + creep.name + " is transferring energy: " + result);
 
