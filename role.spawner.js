@@ -92,6 +92,7 @@ function spawnRole(spawner, module_dict, role, state) {
     }
 
     var result = spawner.spawnCreep(modules, role + spawner.memory.roles[role].length, { memory: { role: role, spawner: spawner.name, state: state } });
+    console.log("spawning creep with result: " + result);
 }
 
 
