@@ -73,7 +73,7 @@ function returnEnergy(creep) {
         console.log("creep " + creep.name + " is transferring energy: " + result);
 
         // if the spawner is full, set state to GIVING_TO_RCL
-        if (result == ERR_FULL) {
+        if (result != OK) {
             creep.memory.state = 'GIVING_TO_RCL';
             console.log("creep " + creep.name + " is giving to RCL");
         }
