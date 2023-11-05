@@ -21,8 +21,7 @@ var roleSpawner = {
         }
 
         // reset all role maps in memory to 0
-        let all_role_keys = Object.keys(spawner.memory.roles);
-        for (let role in all_role_keys) {
+        for (let role in spawner.memory.roles) {
             spawner.memory.roles[role] = 0;
         }
 
