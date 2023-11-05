@@ -96,7 +96,7 @@ function spawnRole(spawner, module_dict, role, state) {
     // get a random 8 digit number for the name of the creep
     let random_name = Math.floor(Math.random() * 100000000);
 
-    var result = spawner.spawnCreep(modules, role + random_name, memory = { role: role, spawner: spawner.name, state: state });
+    var result = spawner.spawnCreep(modules, role + random_name, { memory: { role: role, spawner: spawner.name, state: state } });
     console.log("spawning creep with result: " + result);
 }
 
