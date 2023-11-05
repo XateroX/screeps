@@ -87,7 +87,7 @@ function spawnRole(spawner, module_dict, role, state) {
         let module = key;
         let count = module_dict[key];
         for (let i = 0; i < count; i++) {
-            modules.push(module);
+            modules.push(module_mapping[module]);
         }
     }
 
@@ -114,6 +114,12 @@ function getAllCreeps(spawner) {
     }
     console.log(total + " total creeps");
     return total;
+}
+
+module_mapping = {
+    "WORK": WORK,
+    "MOVE": MOVE,
+    "CARRY": CARRY,
 }
 
 module.exports = roleSpawner
