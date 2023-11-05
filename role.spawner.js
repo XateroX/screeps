@@ -20,10 +20,16 @@ var roleSpawner = {
             all_roles.push(role);
         }
 
+        // reset all role maps in memory to 0
+        let all_role_keys = Object.keys(spawner.memory.roles);
+        for (let role in all_role_keys) {
+            spawner.memory.roles[role] = 0;
+        }
+
+
         // count up all roles and make a dict 
         for (let i = 0; i < all_roles.length; i++) {
             let role = all_roles[i];
-            spawner.memory.roles[role] = 0
             if (!spawner.memory.roles[role]) {
                 spawner.memory.roles[role] = 0;
             }
