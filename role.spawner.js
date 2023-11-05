@@ -64,7 +64,7 @@ var roleSpawner = {
 
 function set_constants(spawner) {
     // set constants for the spawner
-    spawner.memory.max_spawns = 20;
+    spawner.memory.max_spawns = 15;
 }
 
 // function to spawn a certain role creep. Args for how many work, move etc modules to have
