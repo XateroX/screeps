@@ -62,7 +62,7 @@ function getEnergy(creep) {
 
 function returnEnergy(creep) {
     // if the creep is not at the target spawn, move to it
-    if (creep.pos.findInRange(FIND_MY_SPAWNS, 1).length == 0) {
+    if (creep.pos.getRangeTo(Game.spawns[creep.memory.spawner]) > 1) {
         let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
         console.log("creep " + creep.name + " is moving to spawner: " + result);
     }
