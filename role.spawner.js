@@ -11,7 +11,7 @@ var roleSpawner = {
         }
 
         // go through all creeps in game and add their role to the roles dictionary
-        let creeps = Game.creeps;
+        let creeps = spawner.room.find(FIND_MY_CREEPS);
         let all_roles = [];
         for (let name in creeps) {
             let creep = creeps[name];
