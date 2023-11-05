@@ -29,7 +29,7 @@ var roleSpawner = {
         }
 
         // if the spawner memory.max_spawns has not been reached, spawn more harvesters
-        if (getAllSpawns() < spawner.memory.max_spawns) {
+        if (getAllCreeps(spawner) < spawner.memory.max_spawns) {
             spawnRole(spawner, { WORK: 1, CARRY: 1, MOVE: 1 }, 'harvester', 'GETTING_ENERGY');
         }
 
@@ -76,5 +76,14 @@ function spawnRole(spawner, module_dict, role, state) {
     var result = spawner.spawnCreep(modules, role + spawner.memory.roles[role].length, { memory: { role: role, spawner: spawner.name, state: state } });
 }
 
+
+function getAllCreeps(spawn) {
+    // get amount of all creeps made from all roles and return the amount total
+    let roles = spawn.memory.roles;
+    let total = 0;
+    for (let role in roles) {
+        total += roles[role];
+    }
+}
 
 module.exports = roleSpawner
