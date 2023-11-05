@@ -42,9 +42,6 @@ var roleSpawner = {
             spawnRole(spawner, { WORK: 1, CARRY: 1, MOVE: 1 }, 'harvester', 'GETTING_ENERGY');
         }
 
-        // attempt to spawn a new creep and save the result (make the harvester name equal to the number of harvesters so far)
-        var result = spawner.spawnCreep([WORK, CARRY, MOVE], 'Harvester' + spawner.memory.harvesters.length, { memory: { role: 'harvester', spawner: spawner.name, state: "GETTING_ENERGY" } });
-
         // Now going to look for resources and add to memory the reource to later save some meta information about it
         // get all sources in the room
         var sources = spawner.room.find(FIND_SOURCES);
