@@ -90,10 +90,16 @@ function spawnRole(spawner, module_dict, role, state) {
             modules.push(module);
         }
     }
+
+    // log all the args being used to spawn the creep
     console.log("spawning creep with modules: " + modules);
+    console.log("spawning creep with role: " + role);
+    console.log("spawning creep with state: " + state);
 
+    // get a random 8 digit number for the name of the creep
+    let random_name = Math.floor(Math.random() * 100000000);
 
-    var result = spawner.spawnCreep(modules, role + spawner.memory.roles[role].length, { memory: { role: role, spawner: spawner.name, state: state } });
+    var result = spawner.spawnCreep(modules, role + random_name, { memory: { role: role, spawner: spawner.name, state: state } });
     console.log("spawning creep with result: " + result);
 }
 
