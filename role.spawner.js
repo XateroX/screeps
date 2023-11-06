@@ -97,7 +97,7 @@ var roleSpawner = {
                 // get the module dict for that role
 
                 // get the spare resrouces available beyond the cost of the creep and the cost of the default modules
-                let spare_resources = spawner.room.energyAvailable - 200;
+                let spare_resources = spawner.room.energyAvailable;
 
                 // by splitting the spare resources evenly between the priority modules, we can get the number of each module to add
                 let priority_modules = module_priority_dict[role];
