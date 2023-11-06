@@ -101,6 +101,7 @@ var roleSpawner = {
                 for (let i = 0; i < priority_modules.length; i++) {
                     let module = priority_modules[i];
                     let cost = module_mapping[module].cost;
+                    console.log(module + " costs " + cost);
                     module_costs.push(cost);
                 }
 
