@@ -34,10 +34,20 @@ var roleSpawner = {
     run: function (spawner) {
         set_constants(spawner);
 
+        console.log(spawner.memory.all_role_names)
+
         // fill memory.roles dictionary with all roles and their counts
         // if the role is not in memory.roles, add it with a count of 0
-        if (!spawner.memory.roles) {
-            spawner.memory.roles = {};
+        spawner.memory.roles = {};
+
+        // reset all role maps in memory to 0
+        for (let role in spawner.memory.all_role_names) {
+            role = spawner.memory.all_role_names[role]
+            spawner.memory.roles[role] = 0;
+        }
+
+        for (let role in spawner.memory.roles) {
+            console.log(role + " -> " + spawner.memory.roles[role])
         }
 
         // go through all creeps in game and add their role to the roles dictionary
@@ -50,12 +60,7 @@ var roleSpawner = {
             all_roles.push(role);
         }
 
-        spawner.memory.roles = {};
 
-        // reset all role maps in memory to 0
-        for (let role in spawner.memory.all_role_names) {
-            spawner.memory.roles[role] = 0;
-        }
 
         // count up all roles and make a dict 
         for (let i = 0; i < all_roles.length; i++) {
@@ -71,7 +76,10 @@ var roleSpawner = {
             let count = spawner.memory.roles[role];
             let max = spawner.memory.max_spawns[role];
 
+            console.log("spawner considering role " + role)
+
             if (count < max) {
+                console.log("too few " + role + ", spawning one more")
                 // get the module dict for that role
                 let module_dict = default_module_dict[role];
                 let state = default_state_dict[role];
@@ -108,8 +116,8 @@ var roleSpawner = {
 function set_constants(spawner) {
     // set constants for the spawner
     spawner.memory.max_spawns = {
-        'builder': 5,
         'harvester': 20,
+        'builder': 5,
     };
     spawner.memory.all_role_names = ['harvester', 'builder', 'upgrader'];
 }
