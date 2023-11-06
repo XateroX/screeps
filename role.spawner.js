@@ -105,9 +105,9 @@ var roleSpawner = {
                 // get the cost of each module by name
                 let module_costs = [];
                 for (let i = 0; i < priority_modules.length; i++) {
-                    let module = priority_modules[i];
-                    let cost = module_costs[module_mapping[module]];
-                    console.log(module + " costs " + cost);
+                    let current_module = priority_modules[i];
+                    let cost = module_costs[current_module];
+                    console.log(current_module + " costs " + cost);
                     module_costs.push(cost);
                 }
 
