@@ -3,10 +3,6 @@
 var roleBuilder = {
     run: function (creep) {
         let state = creep.memory.state;
-        let currentConstructionSite = creep.memory.currentConstructionSite;
-        if (currentConstructionSite == undefined) {
-            creep.memory.currentConstructionSite = undefined;
-        }
 
         // META - always check for the least-targeted source --------------------
         // check the spawn this unit comes from (memory.spawn) and see if it is full
@@ -18,13 +14,12 @@ var roleBuilder = {
         var spawnEnergyPercent = spawnEnergy / spawnEnergyCapacity;
 
         // if the spawn is full, set the state to BUILDING_SPAWN_EXTENSIONS
-        if (spawnEnergyPercent == 0) {
-            creep.memory.state = 'BUILDING_SPAWN_EXTENSIONS';
-        }
+        //if (spawnEnergyPercent == 0) {
+        //    creep.memory.state = 'BUILDING_SPAWN_EXTENSIONS';
+        //}
         // if the spawn is not full, set the state to BUILDING_SOURCE_EXTENSIONS
-        else {
-            creep.memory.state = 'BUILDING_SOURCE_EXTENSIONS';
-        }
+        creep.memory.state = 'BUILDING_SOURCE_EXTENSIONS';
+
         // END META -------------------------------------------------------------
 
 
@@ -78,6 +73,8 @@ function buildSourceExtensions(creep) {
             creep.memory.state = 'GETTING_ENERGY';
             console.log("creep " + creep.name + " is out of energy");
         }
+    } else {
+        console.log("creep " + creep.name + " cannot find any construction sites")
     }
 
 }

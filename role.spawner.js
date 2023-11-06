@@ -202,7 +202,7 @@ function createSourceConstructionSite(spawner) {
     }
 
     // find the nearest open space to the source that is at least 2 units from the source
-    var open_spaces = creep.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 4, targetSource.pos.x - 4, targetSource.pos.y + 4, targetSource.pos.x + 4, true);
+    var open_spaces = creep.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 4, targetSource.pos.x - 5, targetSource.pos.y + 5, targetSource.pos.x + 5, true);
     let terrain = new Room.Terrain(creep.room.name)
     for (let i = 0; i < open_spaces.length; i++) {
         let space = open_spaces[i]
