@@ -102,6 +102,11 @@ var roleSpawner = {
                 // by splitting the spare resources evenly between the priority modules, we can get the number of each module to add
                 let priority_modules = module_priority_dict[role];
 
+                console.log("priority modules");
+                for (let i = 0; i < priority_modules.length; i++) {
+                    console.log(priority_modules[i]);
+                }
+
                 // get the cost of each module by name
                 let module_costs = [];
                 for (let i = 0; i < priority_modules.length; i++) {
