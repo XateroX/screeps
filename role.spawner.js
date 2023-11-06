@@ -72,7 +72,8 @@ var roleSpawner = {
         }
 
         // for each role if the count is less than the max, spawn another creep
-        for (let role in spawner.memory.roles) {
+        for (let role in spawner.memory.all_role_names) {
+            role = spawner.memory.all_role_names[role]
             let count = spawner.memory.roles[role];
             let max = spawner.memory.max_spawns[role];
 
