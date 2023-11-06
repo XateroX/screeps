@@ -6,6 +6,13 @@ let module_mapping = {
     "CARRY": CARRY,
 }
 
+// dict of module priorities for each role
+let module_priority_dict = {
+    "harvester": ["WORK", "CARRY"],
+    "builder": ["MOVE"],
+}
+
+
 let default_module_dict = {
     "harvester": {
         "WORK": 1,
@@ -82,7 +89,34 @@ var roleSpawner = {
             if (count < max) {
                 //console.log("too few " + role + ", spawning one more")
                 // get the module dict for that role
-                let module_dict = default_module_dict[role];
+
+                // get the spare resrouces available beyond the cost of the creep and the cost of the default modules
+                let spare_resources = spawner.room.energyAvailable - 200;
+
+                // by splitting the spare resources evenly between the priority modules, we can get the number of each module to add
+                let priority_modules = module_priority_dict[role];
+
+                // get the cost of each module by name
+                let module_costs = [];
+                for (let i = 0; i < priority_modules.length; i++) {
+                    let module = priority_modules[i];
+                    let cost = module_mapping[module].cost;
+                    module_costs.push(cost);
+                }
+
+                // sum the costs in module_costs
+                total_module_cost = module_costs.reduce((a, b) => a + b, 0);
+
+                // divide the spare resources by the total module cost to get the number of each module to add
+                count = Math.floor(spare_resources / total_module_cost);
+
+                module_dict = default_module_dict[role];
+
+                for (let i = 0; i < priority_modules.length; i++) {
+                    let module = priority_modules[i];
+                    module_dict[module] += count;
+                }
+
                 let state = default_state_dict[role];
                 spawnRole(spawner, module_dict, role, state);
                 break;
