@@ -35,11 +35,26 @@ var roleBuilder = {
         else if (state == 'BUILDING_SOURCE_EXTENSIONS') {
             buildSourceExtensions(creep);
         }
+        else if (state == 'GETTING_ENERGY') {
+            getEnergy(creep);
+            console.log("creep " + creep.name + " is getting energy");
+        }
 
     }
 };
 function buildSpawnExtensions(creep, spawn) {
 
+}
+
+function getEnergy(creep) {
+    // execute logic of if not full, go to spawn then withdraw energy
+
+    // if the creep is not at the spawn, move to it
+    let result = creep.withdraw(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
+    if (result == ERR_NOT_IN_RANGE) {
+        let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
+        console.log("creep " + creep.name + " is moving to spawn: " + result);
+    }
 }
 
 function buildSourceExtensions(creep) {
@@ -52,6 +67,12 @@ function buildSourceExtensions(creep) {
         if (result == ERR_NOT_IN_RANGE) {
             let result = creep.moveTo(construction_sites[0]);
             console.log("creep " + creep.name + " is moving to construction site: " + result);
+        }
+
+        // if the creep is out of energy, set its state to GETTING_ENERGY
+        if (creep.store[RESOURCE_ENERGY] == 0) {
+            creep.memory.state = 'GETTING_ENERGY';
+            console.log("creep " + creep.name + " is out of energy");
         }
     }
 
