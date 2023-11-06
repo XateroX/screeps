@@ -110,12 +110,18 @@ var roleSpawner = {
                 // divide the spare resources by the total module cost to get the number of each module to add
                 count = Math.floor(spare_resources / total_module_cost);
 
+                console.log("spare resources: " + spare_resources);
+                console.log("total module cost: " + total_module_cost);
+                console.log("count: " + count);
+
                 module_dict = default_module_dict[role];
 
                 for (let i = 0; i < priority_modules.length; i++) {
                     let module = priority_modules[i];
                     module_dict[module] += count;
                 }
+
+                console.log(module_dict);
 
                 let state = default_state_dict[role];
                 spawnRole(spawner, module_dict, role, state);
