@@ -17,7 +17,7 @@ var roleSpawner = {
         }
 
         // go through all creeps in game and add their role to the roles dictionary
-        let creeps = spawner.room.find(FIND_CREEPS);
+        let creeps = spawner.room.find(FIND_MY_CREEPS);
         console.log(creeps.length + " creeps in room");
         let all_roles = [];
         for (let name in creeps) {
@@ -45,7 +45,7 @@ var roleSpawner = {
         // if the spawner memory.max_spawns has not been reached, spawn more harvesters
         if (getAllCreeps(spawner) < spawner.memory.max_spawns) {
             console.log("spawning another creep");
-            spawnRole(spawner, { WORK: 1, CARRY: 1, MOVE: 1 }, 'harvester', 'GETTING_ENERGY');
+            spawnRole(spawner, { WORK: 1, CARRY: 1, MOVE: 1 }, 'builder', 'BUILDING_SOURCE_EXTENSIONS');
         }
 
         // Now going to look for resources and add to memory the reource to later save some meta information about it
