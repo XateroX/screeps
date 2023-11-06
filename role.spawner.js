@@ -85,6 +85,7 @@ var roleSpawner = {
                 let module_dict = default_module_dict[role];
                 let state = default_state_dict[role];
                 spawnRole(spawner, module_dict, role, state);
+                break;
             }
         }
 
