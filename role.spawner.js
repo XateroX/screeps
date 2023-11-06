@@ -124,7 +124,8 @@ var roleSpawner = {
                 }
 
                 // divide the spare resources by the total module cost to get the number of each module to add
-                count = max(Math.floor(spare_resources / total_module_cost), 0);
+                // also max() the value so it cannot co below 0
+                amount_of_priority_modules = Math.max(Math.floor(spare_resources / total_module_cost), 0);
 
                 console.log("spare resources: " + spare_resources);
                 console.log("total module cost: " + total_module_cost);
