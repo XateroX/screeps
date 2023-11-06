@@ -55,6 +55,10 @@ function getEnergy(creep) {
         let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
         console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
+    if (creep.store.getFreeCapacity() == 0) {
+        creep.memory.state = 'BUILDING_SPAWN_EXTENSIONS';
+        console.log("creep " + creep.name + " is full");
+    }
 }
 
 function buildSourceExtensions(creep) {

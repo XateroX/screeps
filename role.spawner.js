@@ -6,6 +6,30 @@ let module_mapping = {
     "CARRY": CARRY,
 }
 
+let default_module_dict = {
+    "harvester": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    },
+    "builder": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    },
+    "upgrader": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    }
+}
+
+let default_state_dict = {
+    "harvester": "GETTING_ENERGY",
+    "builder": "GETTING_ENERGY",
+    "upgrader": "GETTING_ENERGY",
+}
+
 var roleSpawner = {
     run: function (spawner) {
         set_constants(spawner);
@@ -42,10 +66,17 @@ var roleSpawner = {
             spawner.memory.roles[role] += 1;
         }
 
-        // if the spawner memory.max_spawns has not been reached, spawn more harvesters
-        if (getAllCreeps(spawner) < spawner.memory.max_spawns) {
-            console.log("spawning another creep");
-            spawnRole(spawner, { WORK: 1, CARRY: 1, MOVE: 1 }, 'harvester', 'GETTING_ENERGY');
+        // for each role if the count is less than the max, spawn another creep
+        for (let role in spawner.memory.roles) {
+            let count = spawner.memory.roles[role];
+            let max = spawner.memory.max_spawns[role];
+
+            if (count < max) {
+                // get the module dict for that role
+                let module_dict = default_module_dict[role];
+                let state = default_state_dict[role];
+                spawnRole(spawner, module_dict, role, state);
+            }
         }
 
         // Now going to look for resources and add to memory the reource to later save some meta information about it
@@ -76,7 +107,10 @@ var roleSpawner = {
 
 function set_constants(spawner) {
     // set constants for the spawner
-    spawner.memory.max_spawns = 25;
+    spawner.memory.max_spawns = {
+        'builder': 5,
+        'harvester': 20,
+    };
     spawner.memory.all_role_names = ['harvester', 'builder', 'upgrader'];
 }
 
