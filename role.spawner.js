@@ -111,6 +111,13 @@ var roleSpawner = {
                 }
             }
         }
+
+        // if no construction sites exist that are making extensions, make one more
+        var construction_sites = spawner.room.find(FIND_CONSTRUCTION_SITES);
+        var extension_construction_sites = construction_sites.filter(site => site.structureType == STRUCTURE_EXTENSION);
+        if (extension_construction_sites.length == 0) {
+            createSourceConstructionSite(spawner);
+        }
     }
 };
 
@@ -163,7 +170,7 @@ function getAllCreeps(spawner) {
     return total;
 }
 
-function createSourceConstructionSite() {
+function createSourceConstructionSite(spawner) {
     // find most targeted source in the room (based on how many creeps have it as target_source)
     // find the nearest construction site to that source
     // move to that construction site and build it
@@ -195,7 +202,7 @@ function createSourceConstructionSite() {
     }
 
     // find the nearest open space to the source that is at least 2 units from the source
-    var open_spaces = creep.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 2, targetSource.pos.x - 2, targetSource.pos.y + 2, targetSource.pos.x + 2, true);
+    var open_spaces = creep.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 4, targetSource.pos.x - 4, targetSource.pos.y + 4, targetSource.pos.x + 4, true);
     let terrain = new Room.Terrain(creep.room.name)
     for (let i = 0; i < open_spaces.length; i++) {
         let space = open_spaces[i]
@@ -214,13 +221,8 @@ function createSourceConstructionSite() {
         console.log(random_open_space);
 
         // create a construction site at that location
-        var result = creep.room.createConstructionSite(random_open_space.x, random_open_space.y, STRUCTURE_EXTENSION);
+        var result = spawner.room.createConstructionSite(random_open_space.x, random_open_space.y, STRUCTURE_EXTENSION);
         console.log("making construction site with result: " + result + " at pos " + random_open_space.x + " " + random_open_space.y);
-
-        // if createConstructionSite returns OK, set currentConstructionSite to that construction site
-        if (result == OK) {
-            creep.memory.currentConstructionSite = creep.room.lookForAt(LOOK_CONSTRUCTION_SITES, random_open_space.x, random_open_space.y)[0];
-        }
     }
 }
 
