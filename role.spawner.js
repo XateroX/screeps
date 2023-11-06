@@ -119,6 +119,67 @@ function getAllCreeps(spawner) {
     return total;
 }
 
+function createSourceConstructionSite() {
+    // find most targeted source in the room (based on how many creeps have it as target_source)
+    // find the nearest construction site to that source
+    // move to that construction site and build it
+    var creeps = creep.room.find(FIND_MY_CREEPS);
+    var source_dict = {};
+    for (let i = 0; i < creeps.length; i++) {
+        let creep = creeps[i];
+        if (creep.memory.role == 'harvester') {
+            let targetSource = creep.memory.targetSource;
+
+            source_dict[targetSource.id] += 1
+        }
+    }
+
+    // whichever source.id has the largest value in source_dict is the most targeted source
+    // find the nearest construction site to that source
+    var sources = creep.room.find(FIND_SOURCES);
+    var targetSource = sources[0];
+
+    // find the most targeted source
+    for (let i = 0; i < sources.length; i++) {
+        let source = sources[i];
+        let source_id = source.id;
+        let source_target_count = source_dict[source_id];
+
+        if (source_target_count > source_dict[targetSource.id]) {
+            targetSource = source;
+        }
+    }
+
+    // find the nearest open space to the source that is at least 2 units from the source
+    var open_spaces = creep.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 2, targetSource.pos.x - 2, targetSource.pos.y + 2, targetSource.pos.x + 2, true);
+    let terrain = new Room.Terrain(creep.room.name)
+    for (let i = 0; i < open_spaces.length; i++) {
+        let space = open_spaces[i]
+        //console.log(space.x, " ", space.y, " ", terrain.get(space.x,space.y))
+    }
+
+    // remove all entries in open_spaces where terrain.get(space.x, space.y) = 1
+    open_spaces = open_spaces.filter(space => terrain.get(space.x, space.y) == 0)
+
+    // if there are any open spaces
+    if (open_spaces.length > 0) {
+        // take one at random
+        var random_open_space = -1
+        var random_open_space = open_spaces[Math.floor(Math.random() * open_spaces.length)];
+
+        console.log(random_open_space);
+
+        // create a construction site at that location
+        var result = creep.room.createConstructionSite(random_open_space.x, random_open_space.y, STRUCTURE_EXTENSION);
+        console.log("making construction site with result: " + result + " at pos " + random_open_space.x + " " + random_open_space.y);
+
+        // if createConstructionSite returns OK, set currentConstructionSite to that construction site
+        if (result == OK) {
+            creep.memory.currentConstructionSite = creep.room.lookForAt(LOOK_CONSTRUCTION_SITES, random_open_space.x, random_open_space.y)[0];
+        }
+    }
+}
+
 
 
 module.exports = roleSpawner
