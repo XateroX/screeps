@@ -4,6 +4,8 @@ var roleHarvester = {
     run: function (creep) {
         let state = creep.memory.state;
 
+        creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
+
         // META - always check for the least-targeted source --------------------
         var sources = creep.room.find(FIND_SOURCES);
         var targetSource = sources[0];
@@ -61,12 +63,41 @@ function getEnergy(creep) {
 }
 
 function returnEnergy(creep) {
+    // check all extensions and see if any are empty
+    // if any are empty, set the target to that extension
+    // if none are empty, set the target to the spawn
+    var extensions = creep.room.find(FIND_MY_STRUCTURES, {
+        filter: { structureType: STRUCTURE_EXTENSION }
+    });
+
+    extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+
+    if (extensions.length > 0) {
+        // find the nearest extension
+        creep.memory.resourceTarget = extensions[0];
+        let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+
+        for (let i = 0; i < extensions.length; i++) {
+            let extension = extensions[i];
+            let extensionDistance = creep.pos.getRangeTo(extension);
+
+            // if closest so far, set it as the target extension
+            if (extensionDistance < targetExtensionDistance) {
+                creep.memory.resourceTarget = extension;
+                targetExtensionDistance = extensionDistance;
+            }
+        }
+    }
+    else {
+        creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
+    }
+
     // if the creep is not at the target spawn, move to it
-    let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
+    let result = creep.moveTo(creep.memory.resourceTarget);
     console.log("creep " + creep.name + " is moving to spawner: " + result);
 
 
-    result = creep.transfer(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
+    result = creep.transfer(creep.memory.resourceTarget, RESOURCE_ENERGY);
     console.log("creep " + creep.name + " is transferring energy: " + result);
 
     // if the spawner is full, set state to GIVING_TO_RCL
