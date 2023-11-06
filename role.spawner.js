@@ -12,6 +12,12 @@ let module_priority_dict = {
     "builder": ["MOVE"],
 }
 
+let module_costs = {
+    "WORK": 100,
+    "MOVE": 50,
+    "CARRY": 50,
+}
+
 
 let default_module_dict = {
     "harvester": {
@@ -100,7 +106,7 @@ var roleSpawner = {
                 let module_costs = [];
                 for (let i = 0; i < priority_modules.length; i++) {
                     let module = priority_modules[i];
-                    let cost = module_mapping[module].cost;
+                    let cost = module_costs[module_mapping[module]];
                     console.log(module + " costs " + cost);
                     module_costs.push(cost);
                 }
