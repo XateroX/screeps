@@ -73,6 +73,7 @@ function returnEnergy(creep) {
     extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 
     if (extensions.length > 0) {
+        console.log("there are extensions that need energy");
         // find the nearest extension
         creep.memory.resourceTarget = extensions[0];
         let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
