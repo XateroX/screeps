@@ -138,8 +138,6 @@ var roleSpawner = {
                     module_dict[module] += amount_of_priority_modules;
                 }
 
-                console.log(module_dict);
-
                 let state = default_state_dict[role];
                 spawnRole(spawner, module_dict, role, state);
                 break;
@@ -172,7 +170,7 @@ var roleSpawner = {
         // if no construction sites exist that are making extensions, make one more
         var construction_sites = spawner.room.find(FIND_CONSTRUCTION_SITES);
         var extension_construction_sites = construction_sites.filter(site => site.structureType == STRUCTURE_EXTENSION);
-        if (extension_construction_sites.length == 0) {
+        if (extension_construction_sites.length <= 1) {
             createSourceConstructionSite(spawner);
         }
     }
@@ -203,15 +201,15 @@ function spawnRole(spawner, module_dict, role, state) {
     }
 
     // log all the args being used to spawn the creep
-    //console.log("spawning creep with modules: " + modules);
-    //console.log("spawning creep with role: " + role);
-    //console.log("spawning creep with state: " + state);
+    console.log("spawning creep with modules: " + modules);
+    console.log("spawning creep with role: " + role);
+    console.log("spawning creep with state: " + state);
 
     // get a random 8 digit number for the name of the creep
     let random_name = Math.floor(Math.random() * 100000000);
 
     var result = spawner.spawnCreep(modules, role + random_name, { memory: { role: role, spawner: spawner.name, state: state } });
-    //console.log("spawning creep with result: " + result);
+    console.log("spawning creep with result: " + result);
 }
 
 
@@ -231,7 +229,7 @@ function createSourceConstructionSite(spawner) {
     // find most targeted source in the room (based on how many creeps have it as target_source)
     // find the nearest construction site to that source
     // move to that construction site and build it
-    var creeps = creep.room.find(FIND_MY_CREEPS);
+    var creeps = spawner.room.find(FIND_MY_CREEPS);
     var source_dict = {};
     for (let i = 0; i < creeps.length; i++) {
         let creep = creeps[i];
@@ -244,7 +242,7 @@ function createSourceConstructionSite(spawner) {
 
     // whichever source.id has the largest value in source_dict is the most targeted source
     // find the nearest construction site to that source
-    var sources = creep.room.find(FIND_SOURCES);
+    var sources = spawner.room.find(FIND_SOURCES);
     var targetSource = sources[0];
 
     // find the most targeted source
@@ -259,8 +257,8 @@ function createSourceConstructionSite(spawner) {
     }
 
     // find the nearest open space to the source that is at least 2 units from the source
-    var open_spaces = creep.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 4, targetSource.pos.x - 5, targetSource.pos.y + 5, targetSource.pos.x + 5, true);
-    let terrain = new Room.Terrain(creep.room.name)
+    var open_spaces = spawner.room.lookForAtArea(LOOK_TERRAIN, targetSource.pos.y - 4, targetSource.pos.x - 5, targetSource.pos.y + 5, targetSource.pos.x + 5, true);
+    let terrain = new Room.Terrain(spawner.room.name)
     for (let i = 0; i < open_spaces.length; i++) {
         let space = open_spaces[i]
         ////console.log(space.x, " ", space.y, " ", terrain.get(space.x,space.y))
