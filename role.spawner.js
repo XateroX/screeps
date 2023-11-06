@@ -129,13 +129,13 @@ var roleSpawner = {
 
                 console.log("spare resources: " + spare_resources);
                 console.log("total module cost: " + total_module_cost);
-                console.log("count: " + count);
+                console.log("amount_of_priority_modules: " + amount_of_priority_modules);
 
                 module_dict = default_module_dict[role];
 
                 for (let i = 0; i < priority_modules.length; i++) {
                     let module = priority_modules[i];
-                    module_dict[module] += count;
+                    module_dict[module] += amount_of_priority_modules;
                 }
 
                 console.log(module_dict);
