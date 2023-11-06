@@ -93,13 +93,25 @@ function buildSourceExtensions(creep) {
             // create a construction site at that location
             var result = creep.room.createConstructionSite(random_open_space.x, random_open_space.y, STRUCTURE_EXTENSION);
             console.log("making construction site with result: " + result + " at pos " + random_open_space.x + " " + random_open_space.y);
+
+            // if createConstructionSite returns OK, set currentConstructionSite to that construction site
+            if (result == OK) {
+                creep.memory.currentConstructionSite = creep.room.lookForAt(LOOK_CONSTRUCTION_SITES, random_open_space.x, random_open_space.y)[0];
+            }
         }
     }
 
-    // go to current construction site and build it
-    var result = creep.build(creep.memory.currentConstructionSite);
-    if (result == ERR_NOT_IN_RANGE) {
-        creep.moveTo(creep.memory.currentConstructionSite);
+    // go to current construction site and build an extension on it
+    if (creep.memory.currentConstructionSite != undefined) {
+        let result = creep.build(creep.memory.currentConstructionSite);
+        console.log("creep " + creep.name + " is building construction site: " + result);
+        if (result == ERR_NOT_IN_RANGE) {
+            let result = creep.moveTo(creep.memory.currentConstructionSite);
+            console.log("creep " + creep.name + " is moving to construction site: " + result);
+        }
+        else if (result == ERR_INVALID_TARGET) {
+            creep.memory.currentConstructionSite = undefined;
+        }
     }
 }
 
