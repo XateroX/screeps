@@ -112,7 +112,11 @@ var roleSpawner = {
                 }
 
                 // sum the costs in module_costs
-                total_module_cost = module_costs.reduce((a, b) => a + b, 0);
+                total_module_cost = 0;
+                for (let i = 0; i < module_costs.length; i++) {
+                    let cost = module_costs[i];
+                    total_module_cost += cost;
+                }
 
                 // divide the spare resources by the total module cost to get the number of each module to add
                 count = Math.floor(spare_resources / total_module_cost);
