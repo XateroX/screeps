@@ -5,7 +5,8 @@ var roleSpawner = require('role.spawner');
 var roleBuilder = require('role.builder');
 
 let creepRoleMapping = {
-    'harvester': roleHarvester
+    'harvester': roleHarvester,
+    'builder': roleBuilder,
 }
 
 module.exports.loop = function () {
