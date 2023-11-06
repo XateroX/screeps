@@ -9,7 +9,7 @@ let module_mapping = {
 // dict of module priorities for each role
 let module_priority_dict = {
     "harvester": ["WORK", "CARRY"],
-    "builder": ["MOVE"],
+    "builder": ["WORK", "MOVE"],
 }
 
 let module_costs_dict = {
