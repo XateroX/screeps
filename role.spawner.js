@@ -34,7 +34,7 @@ var roleSpawner = {
     run: function (spawner) {
         set_constants(spawner);
 
-        console.log(spawner.memory.all_role_names)
+        //console.log(spawner.memory.all_role_names)
 
         // fill memory.roles dictionary with all roles and their counts
         // if the role is not in memory.roles, add it with a count of 0
@@ -47,12 +47,12 @@ var roleSpawner = {
         }
 
         for (let role in spawner.memory.roles) {
-            console.log(role + " -> " + spawner.memory.roles[role])
+            //console.log(role + " -> " + spawner.memory.roles[role])
         }
 
         // go through all creeps in game and add their role to the roles dictionary
         let creeps = spawner.room.find(FIND_MY_CREEPS);
-        console.log(creeps.length + " creeps in room");
+        //console.log(creeps.length + " creeps in room");
         let all_roles = [];
         for (let name in creeps) {
             let creep = creeps[name];
@@ -77,10 +77,10 @@ var roleSpawner = {
             let count = spawner.memory.roles[role];
             let max = spawner.memory.max_spawns[role];
 
-            console.log("spawner considering role " + role)
+            //console.log("spawner considering role " + role)
 
             if (count < max) {
-                console.log("too few " + role + ", spawning one more")
+                //console.log("too few " + role + ", spawning one more")
                 // get the module dict for that role
                 let module_dict = default_module_dict[role];
                 let state = default_state_dict[role];
@@ -93,7 +93,7 @@ var roleSpawner = {
         // get all sources in the room
         var sources = spawner.room.find(FIND_SOURCES);
 
-        console.log(sources);
+        //console.log(sources);
 
         // if there is no memory.sources, create it
         if (!spawner.memory.sources) {
@@ -103,7 +103,7 @@ var roleSpawner = {
         // for each one add an entry to memory.sources if there isnt one with that source id already
         for (let i = 0; i < sources.length; i++) {
             let source = sources[i];
-            console.log(source);
+            //console.log(source);
             if (!spawner.memory.sources[source.id]) {
                 spawner.memory.sources[source.id] = {
                     id: source.id,
@@ -146,15 +146,15 @@ function spawnRole(spawner, module_dict, role, state) {
     }
 
     // log all the args being used to spawn the creep
-    console.log("spawning creep with modules: " + modules);
-    console.log("spawning creep with role: " + role);
-    console.log("spawning creep with state: " + state);
+    //console.log("spawning creep with modules: " + modules);
+    //console.log("spawning creep with role: " + role);
+    //console.log("spawning creep with state: " + state);
 
     // get a random 8 digit number for the name of the creep
     let random_name = Math.floor(Math.random() * 100000000);
 
     var result = spawner.spawnCreep(modules, role + random_name, { memory: { role: role, spawner: spawner.name, state: state } });
-    console.log("spawning creep with result: " + result);
+    //console.log("spawning creep with result: " + result);
 }
 
 
@@ -164,9 +164,9 @@ function getAllCreeps(spawner) {
     let total = 0;
     for (let role in roles) {
         total += roles[role];
-        console.log(roles[role] + " " + role + "s");
+        //console.log(roles[role] + " " + role + "s");
     }
-    console.log(total + " total creeps");
+    //console.log(total + " total creeps");
     return total;
 }
 
@@ -206,7 +206,7 @@ function createSourceConstructionSite(spawner) {
     let terrain = new Room.Terrain(creep.room.name)
     for (let i = 0; i < open_spaces.length; i++) {
         let space = open_spaces[i]
-        //console.log(space.x, " ", space.y, " ", terrain.get(space.x,space.y))
+        ////console.log(space.x, " ", space.y, " ", terrain.get(space.x,space.y))
     }
 
     // remove all entries in open_spaces where terrain.get(space.x, space.y) = 1
@@ -218,11 +218,11 @@ function createSourceConstructionSite(spawner) {
         var random_open_space = -1
         var random_open_space = open_spaces[Math.floor(Math.random() * open_spaces.length)];
 
-        console.log(random_open_space);
+        //console.log(random_open_space);
 
         // create a construction site at that location
         var result = spawner.room.createConstructionSite(random_open_space.x, random_open_space.y, STRUCTURE_EXTENSION);
-        console.log("making construction site with result: " + result + " at pos " + random_open_space.x + " " + random_open_space.y);
+        //console.log("making construction site with result: " + result + " at pos " + random_open_space.x + " " + random_open_space.y);
     }
 }
 

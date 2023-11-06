@@ -31,15 +31,15 @@ var roleHarvester = {
         // if the creeps state is GETTING_ENERGY, move to the source and harvest from it
         if (state == 'GETTING_ENERGY') {
             getEnergy(creep);
-            console.log("creep " + creep.name + " is getting energy");
+            //console.log("creep " + creep.name + " is getting energy");
         }
         else if (state == 'RETURNING_ENERGY') {
             returnEnergy(creep);
-            console.log("creep " + creep.name + " is returning energy");
+            //console.log("creep " + creep.name + " is returning energy");
         }
         else if (state == 'GIVING_TO_RCL') {
             giveToRCL(creep);
-            console.log("creep " + creep.name + " is giving energy to the RCL");
+            //console.log("creep " + creep.name + " is giving energy to the RCL");
         }
     }
 };
@@ -52,13 +52,13 @@ function getEnergy(creep) {
         let result = creep.harvest(creep.memory.targetSource);
         if (result == ERR_NOT_IN_RANGE) {
             let result = creep.moveTo(creep.memory.targetSource);
-            console.log("creep " + creep.name + " is moving to source: " + result);
+            //console.log("creep " + creep.name + " is moving to source: " + result);
         }
     }
     // if the creep is full, change its state to RETURNING_ENERGY
     else {
         creep.memory.state = 'RETURNING_ENERGY';
-        console.log("creep " + creep.name + " is full");
+        //console.log("creep " + creep.name + " is full");
     }
 }
 
@@ -73,7 +73,7 @@ function returnEnergy(creep) {
     extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 
     if (extensions.length > 0) {
-        console.log("there are extensions that need energy");
+        //console.log("there are extensions that need energy");
         // find the nearest extension
         creep.memory.resourceTarget = extensions[0];
         let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
@@ -95,36 +95,36 @@ function returnEnergy(creep) {
 
     // if the creep is not at the target spawn, move to it
     let result = creep.moveTo(creep.memory.resourceTarget);
-    console.log("creep " + creep.name + " is moving to target: " + creep.memory.resourceTarget + "   " + result);
+    //console.log("creep " + creep.name + " is moving to target: " + creep.memory.resourceTarget + "   " + result);
 
 
     result = creep.transfer(creep.memory.resourceTarget, RESOURCE_ENERGY);
-    console.log("creep " + creep.name + " is transferring energy: " + result);
+    //console.log("creep " + creep.name + " is transferring energy: " + result);
 
     // if the spawner is full, set state to GIVING_TO_RCL
     if (result == ERR_FULL) {
         creep.memory.state = 'GIVING_TO_RCL';
-        console.log("creep " + creep.name + " is giving to RCL");
+        //console.log("creep " + creep.name + " is giving to RCL");
     }
 
     // if the creep is empty, change its state to GETTING_ENERGY
     if (creep.store.getUsedCapacity() == 0) {
         creep.memory.state = 'GETTING_ENERGY';
-        console.log("creep " + creep.name + " is empty");
+        //console.log("creep " + creep.name + " is empty");
     }
 }
 
 function giveToRCL(creep) {
     // transfer energy to it
     let result = creep.upgradeController(creep.room.controller);
-    console.log(result + " while trying to upgrade")
+    //console.log(result + " while trying to upgrade")
     if (result == ERR_NOT_IN_RANGE) {
         let result = creep.moveTo(creep.room.controller);
-        console.log("creep " + creep.name + " is moving to RCL: " + result);
+        //console.log("creep " + creep.name + " is moving to RCL: " + result);
     }
     if (creep.store.getUsedCapacity() == 0) {
         creep.memory.state = 'GETTING_ENERGY';
-        console.log("creep " + creep.name + " is empty");
+        //console.log("creep " + creep.name + " is empty");
     }
 }
 

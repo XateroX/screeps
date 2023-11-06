@@ -32,7 +32,7 @@ var roleBuilder = {
         }
         else if (state == 'GETTING_ENERGY') {
             getEnergy(creep);
-            console.log("creep " + creep.name + " is getting energy");
+            //console.log("creep " + creep.name + " is getting energy");
         }
 
     }
@@ -48,11 +48,11 @@ function getEnergy(creep) {
     let result = creep.withdraw(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
     if (result == ERR_NOT_IN_RANGE) {
         let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
-        console.log("creep " + creep.name + " is moving to spawn: " + result);
+        //console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
     if (creep.store.getFreeCapacity() == 0) {
         creep.memory.state = 'BUILDING_SPAWN_EXTENSIONS';
-        console.log("creep " + creep.name + " is full");
+        //console.log("creep " + creep.name + " is full");
     }
 }
 
@@ -65,16 +65,16 @@ function buildSourceExtensions(creep) {
         let result = creep.build(construction_sites[0])
         if (result == ERR_NOT_IN_RANGE) {
             let result = creep.moveTo(construction_sites[0]);
-            console.log("creep " + creep.name + " is moving to construction site: " + result);
+            //console.log("creep " + creep.name + " is moving to construction site: " + result);
         }
 
         // if the creep is out of energy, set its state to GETTING_ENERGY
         if (creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.state = 'GETTING_ENERGY';
-            console.log("creep " + creep.name + " is out of energy");
+            //console.log("creep " + creep.name + " is out of energy");
         }
     } else {
-        console.log("creep " + creep.name + " cannot find any construction sites")
+        //console.log("creep " + creep.name + " cannot find any construction sites")
     }
 
 }
