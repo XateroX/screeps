@@ -94,7 +94,7 @@ function returnEnergy(creep) {
 
     // if the creep is not at the target spawn, move to it
     let result = creep.moveTo(creep.memory.resourceTarget);
-    console.log("creep " + creep.name + " is moving to spawner: " + result);
+    console.log("creep " + creep.name + " is moving to target: " + creep.memory.resourceTarget + "   " + result);
 
 
     result = creep.transfer(creep.memory.resourceTarget, RESOURCE_ENERGY);
