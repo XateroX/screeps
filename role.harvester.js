@@ -70,7 +70,7 @@ function returnEnergy(creep) {
         filter: { structureType: STRUCTURE_EXTENSION }
     });
 
-    extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+    extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 
     if (extensions.length > 0) {
         //console.log("there are extensions that need energy");
