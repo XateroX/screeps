@@ -1,5 +1,11 @@
 // This file is used in my account of the online MMO Screeps
 
+let module_mapping = {
+    "WORK": WORK,
+    "MOVE": MOVE,
+    "CARRY": CARRY,
+}
+
 var roleSpawner = {
     run: function (spawner) {
         set_constants(spawner);
@@ -70,7 +76,7 @@ var roleSpawner = {
 
 function set_constants(spawner) {
     // set constants for the spawner
-    spawner.memory.max_spawns = 15;
+    spawner.memory.max_spawns = 25;
     spawner.memory.all_role_names = ['harvester', 'builder', 'upgrader'];
 }
 
@@ -113,10 +119,6 @@ function getAllCreeps(spawner) {
     return total;
 }
 
-module_mapping = {
-    "WORK": WORK,
-    "MOVE": MOVE,
-    "CARRY": CARRY,
-}
+
 
 module.exports = roleSpawner
