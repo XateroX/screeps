@@ -28,7 +28,12 @@ var roleHarvester = {
 
         // if the target source has more than 10 harvesters targetting it, set the target 
         // to a source in a different room
-        if (targetSource.targetedBy.length > 10) {
+
+        // get the number of harvesters targetting the target source
+        let targetSourceName = targetSource.id;
+        let targetSourceTargetedBy = _.filter(Game.creeps, (creep) => creep.memory.targetSource == targetSourceName);
+
+        if (targetSourceTargetedBy.length > 10) {
             //console.log("target source is too busy");
             // find the nearest source in a different room
 
