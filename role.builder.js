@@ -52,6 +52,9 @@ function getEnergy(creep) {
         }
     });
 
+    // remove all empty containers
+    containers = containers.filter((container) => container.store[RESOURCE_ENERGY] > 0);
+
     // if there are containers
     if (containers.length > 0) {
         // find the nearest container
