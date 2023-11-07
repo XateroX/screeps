@@ -30,24 +30,25 @@ var roleHarvester = {
         // to a source in a different room
 
         // get the number of harvesters targetting the target source
-        let targetSourceName = targetSource.id;
-        let targetSourceTargetedBy = _.filter(Game.creeps, (creep) => creep.memory.targetSource == targetSourceName);
+        //let targetSourceName = targetSource.id;
+        // let targetSourceTargetedBy = _.filter(Game.creeps, (creep) => creep.memory.targetSource == targetSourceName);
 
-        if (targetSourceTargetedBy.length > 10) {
-            //console.log("target source is too busy");
-            // find the nearest source in a different room
+        // if (targetSourceTargetedBy.length > 10) {
+        //     //console.log("target source is too busy");
+        //     // find the nearest source in a different room
 
-            // get the room two north from the creeps room
-            let targetRoomName = "E53N23";
+        //     // get the room two north from the creeps room
+        //     let targetRoomName = "E53N23";
 
-            // get sources in that room
-            let targetRoom = Game.rooms[targetRoomName];
-            let targetSources = targetRoom.find(FIND_SOURCES);
+        //     // get sources in that room
+        //     let targetRoom = Game.rooms[targetRoomName];
+        //     let targetSources = targetRoom.find(FIND_SOURCES);
 
-            if (targetSources.length > 0) {
-                creep.memory.targetSource = targetSources[0];
-            }
-        }
+        //     if (targetSources.length > 0) {
+        //         console.log("!!!!!!!!!!!!!!!!!!!found a source in a different room");
+        //         creep.memory.targetSource = targetSources[0];
+        //     }
+        // }
         // END META -------------------------------------------------------------
 
 

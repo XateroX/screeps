@@ -123,6 +123,11 @@ function loadStorage(creep) {
         creep.memory.state = 'TRAVELLING_TO_SOURCE';
         console.log("creep " + creep.name + " is travelling to source");
     }
+    // if the creep is empty, also go back
+    else if (creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.state = 'TRAVELLING_TO_SOURCE';
+        console.log("creep " + creep.name + " is travelling to source");
+    }
 
 }
 
