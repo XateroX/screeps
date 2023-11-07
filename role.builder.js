@@ -19,6 +19,7 @@ var roleBuilder = {
         //}
         // if the spawn is not full, set the state to BUILDING_SOURCE_EXTENSIONS
         creep.memory.state = 'BUILDING_SOURCE_EXTENSIONS';
+        creep.memory.energySource = creep.memory.spawn;
 
         // END META -------------------------------------------------------------
 
@@ -44,10 +45,36 @@ function buildSpawnExtensions(creep, spawn) {
 function getEnergy(creep) {
     // execute logic of if not full, go to spawn then withdraw energy
 
+    // find the nearest container
+    var containers = creep.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_CONTAINER)
+        }
+    });
+
+    // if there are containers
+    if (containers.length > 0) {
+        // find the nearest container
+        creep.memory.energySource = containers[0];
+        var currentContainerDistance = creep.pos.getRangeTo(creep.memory.energySource);
+
+        // find the nearest container
+        for (let i = 0; i < containers.length; i++) {
+            let container = containers[i];
+            let containerDistance = creep.pos.getRangeTo(container);
+
+            // if closest so far, set it as the target source
+            if (containerDistance < currentContainerDistance) {
+                creep.memory.energySource = container;
+                currentContainerDistance = containerDistance;
+            }
+        }
+    }
+
     // if the creep is not at the spawn, move to it
-    let result = creep.withdraw(Game.spawns[creep.memory.spawner], RESOURCE_ENERGY);
+    let result = creep.withdraw(Game.spawns[creep.memory.energySource], RESOURCE_ENERGY);
     if (result == ERR_NOT_IN_RANGE) {
-        let result = creep.moveTo(Game.spawns[creep.memory.spawner]);
+        let result = creep.moveTo(Game.spawns[creep.memory.energySource]);
         //console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
     if (creep.store.getFreeCapacity() == 0) {
