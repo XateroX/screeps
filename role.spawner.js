@@ -192,7 +192,7 @@ var roleSpawner = {
 function set_constants(spawner) {
     // set constants for the spawner
     spawner.memory.max_spawns = {
-        'harvester': 20,
+        'harvester': 15,
         'exc_harvester': 5,
         'builder': 5,
     };
