@@ -72,9 +72,9 @@ function getEnergy(creep) {
     }
 
     // if the creep is not at the spawn, move to it
-    let result = creep.withdraw(Game.spawns[creep.memory.energySource], RESOURCE_ENERGY);
+    let result = creep.withdraw(creep.memory.energySource, RESOURCE_ENERGY);
     if (result == ERR_NOT_IN_RANGE) {
-        let result = creep.moveTo(Game.spawns[creep.memory.energySource]);
+        let result = creep.moveTo(creep.memory.energySource);
         //console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
     if (creep.store.getFreeCapacity() == 0) {
