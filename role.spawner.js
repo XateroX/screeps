@@ -8,7 +8,7 @@ let module_mapping = {
 
 // dict of module priorities for each role
 let module_priority_dict = {
-    "harvester": ["WORK", "CARRY"],
+    "harvester": ["WORK", "CARRY", "MOVE"],
     "builder": ["WORK", "MOVE"],
 }
 
@@ -131,11 +131,16 @@ var roleSpawner = {
                 console.log("total module cost: " + total_module_cost);
                 console.log("amount_of_priority_modules: " + amount_of_priority_modules);
 
+                for (let c_mod in default_module_dict[role]) {
+                    console.log(c_mod + " default is " + default_module_dict[role][c_mod])
+
+                }
                 module_dict = default_module_dict[role];
 
                 for (let i = 0; i < priority_modules.length; i++) {
                     let module = priority_modules[i];
                     module_dict[module] += amount_of_priority_modules;
+                    console.log("added " + amount_of_priority_modules + " to " + module + " to get " + module_dict[module])
                 }
 
                 let state = default_state_dict[role];
@@ -180,10 +185,53 @@ var roleSpawner = {
 function set_constants(spawner) {
     // set constants for the spawner
     spawner.memory.max_spawns = {
-        'harvester': 15,
+        'harvester': 10,
         'builder': 5,
     };
     spawner.memory.all_role_names = ['harvester', 'builder', 'upgrader'];
+
+    module_mapping = {
+        "WORK": WORK,
+        "MOVE": MOVE,
+        "CARRY": CARRY,
+    }
+
+    // dict of module priorities for each role
+    module_priority_dict = {
+        "harvester": ["WORK", "CARRY", "MOVE"],
+        "builder": ["WORK", "MOVE"],
+    }
+
+    module_costs_dict = {
+        "WORK": 100,
+        "MOVE": 50,
+        "CARRY": 50,
+    }
+
+
+    default_module_dict = {
+        "harvester": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        },
+        "builder": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        },
+        "upgrader": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        }
+    }
+
+    default_state_dict = {
+        "harvester": "GETTING_ENERGY",
+        "builder": "GETTING_ENERGY",
+        "upgrader": "GETTING_ENERGY",
+    }
 }
 
 // function to spawn a certain role creep. Args for how many work, move etc modules to have
