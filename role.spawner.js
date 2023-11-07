@@ -10,6 +10,7 @@ let module_mapping = {
 let module_priority_dict = {
     "harvester": ["WORK", "CARRY", "MOVE"],
     "builder": ["WORK", "MOVE"],
+    "exc_harvester": ["WORK"],
 }
 
 let module_costs_dict = {
@@ -21,6 +22,11 @@ let module_costs_dict = {
 
 let default_module_dict = {
     "harvester": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    },
+    "exc_harvester": {
         "WORK": 1,
         "MOVE": 1,
         "CARRY": 1,
@@ -39,6 +45,7 @@ let default_module_dict = {
 
 let default_state_dict = {
     "harvester": "GETTING_ENERGY",
+    "exc_harvester": "TRAVELLING_TO_SOURCE",
     "builder": "GETTING_ENERGY",
     "upgrader": "GETTING_ENERGY",
 }
@@ -186,9 +193,10 @@ function set_constants(spawner) {
     // set constants for the spawner
     spawner.memory.max_spawns = {
         'harvester': 20,
+        'exc_harvester': 5,
         'builder': 5,
     };
-    spawner.memory.all_role_names = ['harvester', 'builder', 'upgrader'];
+    spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upgrader'];
 
     module_mapping = {
         "WORK": WORK,
@@ -200,6 +208,7 @@ function set_constants(spawner) {
     module_priority_dict = {
         "harvester": ["WORK", "CARRY", "MOVE"],
         "builder": ["WORK", "MOVE"],
+        "exc_harvester": ["WORK"],
     }
 
     module_costs_dict = {
@@ -211,6 +220,11 @@ function set_constants(spawner) {
 
     default_module_dict = {
         "harvester": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        },
+        "exc_harvester": {
             "WORK": 1,
             "MOVE": 1,
             "CARRY": 1,
@@ -229,6 +243,7 @@ function set_constants(spawner) {
 
     default_state_dict = {
         "harvester": "GETTING_ENERGY",
+        "exc_harvester": "TRAVELLING_TO_SOURCE",
         "builder": "GETTING_ENERGY",
         "upgrader": "GETTING_ENERGY",
     }
@@ -281,7 +296,7 @@ function createSourceConstructionSite(spawner) {
     var source_dict = {};
     for (let i = 0; i < creeps.length; i++) {
         let creep = creeps[i];
-        if (creep.memory.role == 'harvester') {
+        if (creep.memory.role == 'harvester' || creep.memory.role == 'exc_harvester') {
             let targetSource = creep.memory.targetSource;
 
             source_dict[targetSource.id] += 1

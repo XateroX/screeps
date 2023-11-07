@@ -1,12 +1,14 @@
 // This file is used in my account of the online MMO Screeps
 
 var roleHarvester = require('role.harvester');
+var roleExcHarvester = require('role.exc_harvester');
 var roleSpawner = require('role.spawner');
 var roleBuilder = require('role.builder');
 
 let creepRoleMapping = {
     'harvester': roleHarvester,
     'builder': roleBuilder,
+    'exc_harvester': roleExcHarvester,
 }
 
 module.exports.loop = function () {
