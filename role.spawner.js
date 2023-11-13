@@ -192,8 +192,8 @@ var roleSpawner = {
 function set_constants(spawner) {
     // set constants for the spawner
     spawner.memory.max_spawns = {
-        'harvester': 15,
-        'exc_harvester': 5,
+        'harvester': 10,
+        'exc_harvester': 0,
         'builder': 5,
     };
     spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upgrader'];
@@ -220,9 +220,9 @@ function set_constants(spawner) {
 
     default_module_dict = {
         "harvester": {
-            "WORK": 1,
-            "MOVE": 1,
-            "CARRY": 1,
+            "WORK": 3,
+            "MOVE": 2,
+            "CARRY": 5,
         },
         "exc_harvester": {
             "WORK": 1,
