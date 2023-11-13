@@ -1,7 +1,5 @@
 // This file is used in my account of the online MMO Screeps
 
-// test
-
 var roleHarvester = require('role.harvester');
 var roleExcHarvester = require('role.exc_harvester');
 var roleSpawner = require('role.spawner');

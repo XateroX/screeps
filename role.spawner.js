@@ -19,12 +19,34 @@ let module_costs_dict = {
     "CARRY": 50,
 }
 
-
 let default_module_dict = {
     "harvester": {
         "WORK": 1,
         "MOVE": 1,
         "CARRY": 1,
+    },
+    "exc_harvester": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    },
+    "builder": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    },
+    "upgrader": {
+        "WORK": 1,
+        "MOVE": 1,
+        "CARRY": 1,
+    }
+}
+
+let target_module_dict = {
+    "harvester": {
+        "WORK": 5,
+        "MOVE": 2,
+        "CARRY": 5,
     },
     "exc_harvester": {
         "WORK": 1,
@@ -54,130 +76,59 @@ var roleSpawner = {
     run: function (spawner) {
         set_constants(spawner);
 
-        //console.log(spawner.memory.all_role_names)
+        // get all sources in the room in a list in memory if memory.sources doesnt exist
+        //console.log(spawner.memory.sources);
+        if (!spawner.memory.sources) {
+            spawner.memory.sources = {};
 
-        // fill memory.roles dictionary with all roles and their counts
-        // if the role is not in memory.roles, add it with a count of 0
-        spawner.memory.roles = {};
+            // iterate through all sources and set defaulers
+            let all_sources = spawner.room.find(FIND_SOURCES);
+            for (let i = 0; i < all_sources.length; i++) {
+                let source = all_sources[i];
+                spawner.memory.sources[source.id] = {
+                    "self": source,
+                    "harvesters": [],
+                    "spaces": -1,
+                }
 
-        // reset all role maps in memory to 0
-        for (let role in spawner.memory.all_role_names) {
-            role = spawner.memory.all_role_names[role]
-            spawner.memory.roles[role] = 0;
-        }
+                // find the number of open spaces around that source
+                // find the nearest open space to the source that is at least 2 units from the source
+                var open_spaces = spawner.room.lookForAtArea(LOOK_TERRAIN, source.pos.y - 1, source.pos.x - 1, source.pos.y + 1, source.pos.x + 1, true);
+                let terrain = new Room.Terrain(spawner.room.name)
 
-        for (let role in spawner.memory.roles) {
-            //console.log(role + " -> " + spawner.memory.roles[role])
-        }
-
-        // go through all creeps in game and add their role to the roles dictionary
-        let creeps = spawner.room.find(FIND_MY_CREEPS);
-        //console.log(creeps.length + " creeps in room");
-        let all_roles = [];
-        for (let name in creeps) {
-            let creep = creeps[name];
-            let role = creep.memory.role;
-            all_roles.push(role);
-        }
-
-
-
-        // count up all roles and make a dict 
-        for (let i = 0; i < all_roles.length; i++) {
-            let role = all_roles[i];
-            if (!spawner.memory.roles[role]) {
-                spawner.memory.roles[role] = 0;
+                // remove all entries in open_spaces where terrain.get(space.x, space.y) = 1 (where it is not open)
+                open_spaces = open_spaces.filter(space => terrain.get(space.x, space.y) == 0)
+                spawner.memory.sources[source.id]["spaces"] = open_spaces.length;
             }
-            spawner.memory.roles[role] += 1;
         }
 
-        // for each role if the count is less than the max, spawn another creep
-        for (let role in spawner.memory.all_role_names) {
-            role = spawner.memory.all_role_names[role]
-            let count = spawner.memory.roles[role];
-            let max = spawner.memory.max_spawns[role];
+        // check all creeps in the room and filter to those targeting each source
+        //console.log(spawner.memory.sources);
+        let room_creeps = spawner.room.find(FIND_MY_CREEPS);
 
-            //console.log("spawner considering role " + role)
 
-            if (count < max) {
-                //console.log("too few " + role + ", spawning one more")
-                // get the module dict for that role
+        // get all creeps for each source and log them with it in memory
+        for (let source_id in spawner.memory.sources) {
+            let source = spawner.memory.sources[source_id];
+            let source_creeps = room_creeps.filter(creep => creep.memory.targetSource == source);
+            source["harvesters"] = source_creeps;
+        }
 
-                // get the spare resrouces available beyond the cost of the creep and the cost of the default modules
-                let spare_resources = spawner.room.energyAvailable - 200;
-
-                // by splitting the spare resources evenly between the priority modules, we can get the number of each module to add
-                let priority_modules = module_priority_dict[role];
-
-                console.log("priority modules");
-                for (let i = 0; i < priority_modules.length; i++) {
-                    console.log(priority_modules[i]);
+        // if a source has too few harvesters, set the next spawn to be a harvester targeting that source
+        for (let source_id in spawner.memory.sources) {
+            let source = spawner.memory.sources[source_id];
+            if (source["harvesters"].length < source["spaces"]) {
+                spawner.memory.next_spawn = {
+                    "role": "harvester",
+                    "targetSource": source,
                 }
-
-                // get the cost of each module by name
-                let module_costs = [];
-                for (let i = 0; i < priority_modules.length; i++) {
-                    let current_module = priority_modules[i];
-                    let cost = module_costs_dict[current_module];
-                    console.log(current_module + " costs " + cost);
-                    module_costs.push(cost);
-                }
-
-                // sum the costs in module_costs
-                total_module_cost = 0;
-                for (let i = 0; i < module_costs.length; i++) {
-                    let cost = module_costs[i];
-                    total_module_cost += cost;
-                }
-
-                // divide the spare resources by the total module cost to get the number of each module to add
-                // also max() the value so it cannot co below 0
-                amount_of_priority_modules = Math.max(Math.floor(spare_resources / total_module_cost), 0);
-
-                console.log("spare resources: " + spare_resources);
-                console.log("total module cost: " + total_module_cost);
-                console.log("amount_of_priority_modules: " + amount_of_priority_modules);
-
-                for (let c_mod in default_module_dict[role]) {
-                    console.log(c_mod + " default is " + default_module_dict[role][c_mod])
-
-                }
-                module_dict = default_module_dict[role];
-
-                for (let i = 0; i < priority_modules.length; i++) {
-                    let module = priority_modules[i];
-                    module_dict[module] += amount_of_priority_modules;
-                    console.log("added " + amount_of_priority_modules + " to " + module + " to get " + module_dict[module])
-                }
-
-                let state = default_state_dict[role];
-                spawnRole(spawner, module_dict, role, state);
                 break;
             }
         }
 
-        // Now going to look for resources and add to memory the reource to later save some meta information about it
-        // get all sources in the room
-        var sources = spawner.room.find(FIND_SOURCES);
-
-        //console.log(sources);
-
-        // if there is no memory.sources, create it
-        if (!spawner.memory.sources) {
-            spawner.memory.sources = {};
-        }
-
-        // for each one add an entry to memory.sources if there isnt one with that source id already
-        for (let i = 0; i < sources.length; i++) {
-            let source = sources[i];
-            //console.log(source);
-            if (!spawner.memory.sources[source.id]) {
-                spawner.memory.sources[source.id] = {
-                    id: source.id,
-                    harvesters: []
-                }
-            }
-        }
+        // calculate the next spawn based on the priority modules
+        calculate_next_spawn(spawner);
+        spawn(spawner);
 
         // if no construction sites exist that are making extensions, make one more
         var construction_sites = spawner.room.find(FIND_CONSTRUCTION_SITES);
@@ -188,15 +139,50 @@ var roleSpawner = {
     }
 };
 
+function modules_total_cost(module_dict) {
+    let total_cost = 0;
+
+    for (let module in module_dict) {
+        let count = module_dict[module];
+        let module_cost = module_costs_dict[module];
+        total_cost += count * module_cost;
+    }
+
+    return total_cost;
+}
+
+function calculate_next_spawn(spawner) {
+    // get the default for the current spawn's role
+    let chosen_modules = default_module_dict[spawner.memory.next_spawn.role];
+
+    total_default_cost = modules_total_cost(chosen_modules);
+
+    // get available energy
+    available_energy = spawner.room.energyAvailable - total_default_cost;
+
+
+    // cycle and choose amount of modules based on priority up to a max
+    for (module_type in module_priority_dict[spawner.memory.next_spawn.role]) {
+        let module_cost = module_costs_dict[module_type];
+
+        // if the module cost is less than the available energy, add it to the default modules
+        if (module_cost <= available_energy && chosen_modules[module] < target_module_dict[spawner.memory.next_spawn.role][module_type]) {
+            chosen_modules[module] += 1;
+            available_energy -= module_cost;
+        }
+    }
+
+    // set the modules for the next spawn
+    spawner.memory.next_spawn.modules = chosen_modules;
+
+    // set the memory for the next spawn
+    spawner.memory.next_spawn.state = default_state_dict[spawner.memory.next_spawn.role];
+}
 
 function set_constants(spawner) {
     // set constants for the spawner
-    spawner.memory.max_spawns = {
-        'harvester': 15,
-        'exc_harvester': 5,
-        'builder': 5,
-    };
     spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upgrader'];
+    spawner.memory.next_spawn = {};
 
     module_mapping = {
         "WORK": WORK,
@@ -217,12 +203,34 @@ function set_constants(spawner) {
         "CARRY": 50,
     }
 
-
     default_module_dict = {
         "harvester": {
             "WORK": 1,
             "MOVE": 1,
             "CARRY": 1,
+        },
+        "exc_harvester": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        },
+        "builder": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        },
+        "upgrader": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 1,
+        }
+    }
+
+    target_module_dict = {
+        "harvester": {
+            "WORK": 5,
+            "MOVE": 2,
+            "CARRY": 5,
         },
         "exc_harvester": {
             "WORK": 1,
@@ -250,17 +258,25 @@ function set_constants(spawner) {
 }
 
 // function to spawn a certain role creep. Args for how many work, move etc modules to have
-function spawnRole(spawner, module_dict, role, state) {
+function spawn(spawner) {
     // modules to include (multipy work_count by WORK etc)
     let modules = [];
 
     // for each key in the module_dict, add that many of that module to the modules array
-    for (let key in module_dict) {
+    for (let key in spawner.memory.next_spawn.modules) {
         let module = key;
         let count = module_dict[key];
         for (let i = 0; i < count; i++) {
             modules.push(module_mapping[module]);
         }
+    }
+
+    let role = spawner.memory.next_spawn.role;
+    let state = spawner.memory.next_spawn.state;
+    let memory_dict = { spawner: spawner.name }
+
+    for (let arg in spawner.memory.next_spawn) {
+        memory_dict[arg] = spawner.memory.next_spawn[arg];
     }
 
     // log all the args being used to spawn the creep
@@ -271,7 +287,7 @@ function spawnRole(spawner, module_dict, role, state) {
     // get a random 8 digit number for the name of the creep
     let random_name = Math.floor(Math.random() * 100000000);
 
-    var result = spawner.spawnCreep(modules, role + random_name, { memory: { role: role, spawner: spawner.name, state: state } });
+    var result = spawner.spawnCreep(modules, role + random_name, { memory: memory_dict });
     console.log("spawning creep with result: " + result);
 }
 
