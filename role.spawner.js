@@ -50,6 +50,18 @@ let default_state_dict = {
     "upgrader": "GETTING_ENERGY",
 }
 
+function sum_module_costs(module_dict) {
+    total_cost = 0;
+
+    for (let module in module_dict) {
+        let count = module_dict[module];
+        let cost = module_costs_dict[module];
+        total_cost += count * cost;
+    }
+
+    return total_cost;
+}
+
 var roleSpawner = {
     run: function (spawner) {
         set_constants(spawner);
@@ -104,7 +116,7 @@ var roleSpawner = {
                 // get the module dict for that role
 
                 // get the spare resrouces available beyond the cost of the creep and the cost of the default modules
-                let spare_resources = spawner.room.energyAvailable - 200;
+                let spare_resources = spawner.room.energyAvailable - sum_module_costs(default_module_dict[role]);
 
                 // by splitting the spare resources evenly between the priority modules, we can get the number of each module to add
                 let priority_modules = module_priority_dict[role];
