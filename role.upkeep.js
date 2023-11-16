@@ -36,13 +36,73 @@ var roleUpkeep = {
             findAndUpkeepWalls(creep, spawn);
             //console.log("creep " + creep.name + " is getting energy");
         }
+        else if (state == 'UPKEEP_TOMBSTONE') {
+            findAndUpkeepTombstones(creep, spawn);
+            //console.log("creep " + creep.name + " is getting energy");
+        }
         else if (state == 'GETTING_ENERGY') {
             getEnergy(creep);
+            //console.log("creep " + creep.name + " is getting energy");
+        }
+        else if (state == 'RETURNING_ENERGY') {
+            returnEnergy(creep);
             //console.log("creep " + creep.name + " is getting energy");
         }
 
     }
 };
+
+function returnEnergy(creep) {
+    // check all extensions and see if any are empty
+    // if any are empty, set the target to that extension
+    // if none are empty, set the target to the spawn
+    var extensions = creep.room.find(FIND_MY_STRUCTURES, {
+        filter: { structureType: STRUCTURE_EXTENSION }
+    });
+
+    extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+
+    if (extensions.length > 0) {
+        //console.log("there are extensions that need energy");
+        // find the nearest extension
+        creep.memory.resourceTarget = extensions[0];
+        let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+
+        for (let i = 0; i < extensions.length; i++) {
+            let extension = extensions[i];
+            let extensionDistance = creep.pos.getRangeTo(extension);
+
+            // if closest so far, set it as the target extension
+            if (extensionDistance < targetExtensionDistance) {
+                creep.memory.resourceTarget = extension;
+                targetExtensionDistance = extensionDistance;
+            }
+        }
+    }
+    else {
+        creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
+    }
+
+    // if the creep is not at the target spawn, move to it
+    let result = creep.moveTo(creep.memory.resourceTarget);
+    //console.log("creep " + creep.name + " is moving to target: " + creep.memory.resourceTarget + "   " + result);
+
+
+    result = creep.transfer(creep.memory.resourceTarget, RESOURCE_ENERGY);
+    //console.log("creep " + creep.name + " is transferring energy: " + result);
+
+    // if the spawner is full, set state to GIVING_TO_RCL
+    if (result == ERR_FULL) {
+        creep.memory.state = 'GIVING_TO_RCL';
+        //console.log("creep " + creep.name + " is giving to RCL");
+    }
+
+    // if the creep is empty, change its state to GETTING_ENERGY
+    if (creep.store.getUsedCapacity() == 0) {
+        creep.memory.state = 'GETTING_ENERGY';
+        //console.log("creep " + creep.name + " is empty");
+    }
+}
 
 function getEnergy(creep) {
     // execute logic of if not full, go to spawn then withdraw energy
@@ -199,6 +259,45 @@ function findAndUpkeepWalls(creep) {
         if (result == OK) {
             result = creep.repair(creep.memory.upkeepTarget, RESOURCE_ENERGY);
             console.log("creep " + creep.name + " is repairing walls: " + result);
+        }
+    } else {
+        creep.memory.state = 'UPKEEP_TOMBSTONE';
+    }
+}
+
+function findAndUpkeepTombstones(creep) {
+    // get all walls in the room
+    var stones = creep.room.find(FIND_TOMBSTONES);
+
+    // if there are towers that need energy
+    if (stones.length > 0) {
+        // find the nearest tower
+        creep.memory.upkeepTarget = stones[0];
+        let targetStoneDistance = creep.pos.getRangeTo(creep.memory.upkeepTarget);
+
+        for (let i = 0; i < stones.length; i++) {
+            let stone = stones[i];
+            let wallStone = creep.pos.getRangeTo(stone);
+
+            // if closest so far, set it as the target tower
+            if (stoneDistance < targetStoneDistance) {
+                creep.memory.upkeepTarget = stone;
+                targetStoneDistance = stoneDistance;
+            }
+        }
+
+        // if the creep is not at the tower, move to it
+        let result = creep.moveTo(creep.memory.upkeepTarget);
+        //console.log("creep " + creep.name + " is moving to tower: " + result);
+
+        // if the creep is at the tower, transfer energy
+        if (result == OK) {
+            result = creep.withdraw(creep.memory.upkeepTarget, RESOURCE_ENERGY);
+            console.log("creep " + creep.name + " is withdrawing from tombstone: " + result);
+
+            if (creep.memory.upkeepTarget.store[RESOURCE_ENERGY] == 0) {
+                creep.memory.state = 'RETURNING_ENERGY';
+            }
         }
     }
 }
