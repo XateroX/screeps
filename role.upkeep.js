@@ -179,6 +179,7 @@ function getEnergy(creep) {
     }
     if (creep.store.getFreeCapacity() == 0) {
         creep.memory.state = 'UPKEEP_TOWER';
+        console.log("creep " + creep.name + " now updating towers");
     }
 }
 
@@ -222,6 +223,7 @@ function findAndUpkeepTowers(creep) {
         }
     } else {
         creep.memory.state = 'UPKEEP_WALL';
+        console.log("creep " + creep.name + " now updating walls");
     }
 }
 
@@ -262,6 +264,7 @@ function findAndUpkeepWalls(creep) {
         }
     } else {
         creep.memory.state = 'UPKEEP_TOMBSTONE';
+        console.log("creep " + creep.name + " now updating tombstones");
     }
 }
 
