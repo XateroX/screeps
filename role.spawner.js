@@ -221,7 +221,7 @@ function set_constants(spawner) {
     default_module_dict = {
         "harvester": {
             "WORK": 3,
-            "MOVE": 2,
+            "MOVE": 3,
             "CARRY": 5,
         },
         "exc_harvester": {
