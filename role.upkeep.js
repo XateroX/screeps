@@ -299,6 +299,8 @@ function findAndUpkeepTombstones(creep) {
                 creep.memory.state = 'RETURNING_ENERGY';
             }
         }
+    } else {
+        creep.memory.state = 'UPKEEP_TOWER';
     }
 }
 
