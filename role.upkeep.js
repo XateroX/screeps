@@ -194,6 +194,7 @@ function findAndUpkeepTowers(creep) {
 
     // if there are towers that need energy
     if (towers.length > 0) {
+        console.log("there are towers that need energy");
         // find the nearest tower
         creep.memory.upkeepTarget = towers[0];
         let targetTowerDistance = creep.pos.getRangeTo(creep.memory.upkeepTarget);
@@ -238,6 +239,7 @@ function findAndUpkeepWalls(creep) {
 
     // if there are towers that need energy
     if (walls.length > 0) {
+        console.log("there are walls that need energy");
         // find the nearest tower
         creep.memory.upkeepTarget = walls[0];
         let targetWallDistance = creep.pos.getRangeTo(creep.memory.upkeepTarget);
@@ -274,6 +276,7 @@ function findAndUpkeepTombstones(creep) {
 
     // if there are towers that need energy
     if (stones.length > 0) {
+        console.log("there are stones to be harvested");
         // find the nearest tower
         creep.memory.upkeepTarget = stones[0];
         let targetStoneDistance = creep.pos.getRangeTo(creep.memory.upkeepTarget);
