@@ -235,7 +235,7 @@ function findAndUpkeepWalls(creep) {
     });
 
     // filter to those with less than 500 energy
-    walls = walls.filter(wall => wall.hits < 500);
+    walls = walls.filter(wall => wall.hits < 5000);
 
     console.log("walls with low health: " + walls.length);
 
