@@ -28,6 +28,10 @@ var roleUpkeep = {
         if (state == 'UPKEEP_TOWER') {
             findAndUpkeepTowers(creep, spawn);
         }
+        else if (state == 'UPKEEP_WALL') {
+            findAndUpkeepWalls(creep, spawn);
+            //console.log("creep " + creep.name + " is getting energy");
+        }
         else if (state == 'GETTING_ENERGY') {
             getEnergy(creep);
             //console.log("creep " + creep.name + " is getting energy");
@@ -148,6 +152,46 @@ function findAndUpkeepTowers(creep) {
         if (result == OK) {
             result = creep.transfer(creep.memory.upkeepTarget, RESOURCE_ENERGY);
             //console.log("creep " + creep.name + " is transferring energy: " + result);
+        }
+    } else {
+        creep.memory.state = 'UPKEEP_WALL';
+    }
+}
+
+function findAndUpkeepWalls(creep) {
+    // get all walls in the room
+    var walls = creep.room.find(FIND_MY_STRUCTURES, {
+        filter: { structureType: STRUCTURE_WALL }
+    });
+
+    // filter to those with less than 500 energy
+    walls = walls.filter(walls => walls.hits < 500);
+
+    // if there are towers that need energy
+    if (walls.length > 0) {
+        // find the nearest tower
+        creep.memory.upkeepTarget = walls[0];
+        let targetWallDistance = creep.pos.getRangeTo(creep.memory.upkeepTarget);
+
+        for (let i = 0; i < walls.length; i++) {
+            let wall = walls[i];
+            let wallDistance = creep.pos.getRangeTo(wall);
+
+            // if closest so far, set it as the target tower
+            if (wallDistance < targetWallDistance) {
+                creep.memory.upkeepTarget = wall;
+                targetWallDistance = wallDistance;
+            }
+        }
+
+        // if the creep is not at the tower, move to it
+        let result = creep.moveTo(creep.memory.upkeepTarget);
+        //console.log("creep " + creep.name + " is moving to tower: " + result);
+
+        // if the creep is at the tower, transfer energy
+        if (result == OK) {
+            result = creep.repair(creep.memory.upkeepTarget, RESOURCE_ENERGY);
+            console.log("creep " + creep.name + " is repairing walls: " + result);
         }
     }
 }
