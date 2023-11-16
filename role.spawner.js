@@ -208,8 +208,9 @@ function set_constants(spawner) {
         'harvester': 7,
         'exc_harvester': 0,
         'builder': 1,
+        'upkeep': 1,
     };
-    spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upgrader'];
+    spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upkeep'];
 
     module_mapping = {
         "WORK": WORK,
@@ -222,6 +223,7 @@ function set_constants(spawner) {
         "harvester": ["WORK", "CARRY", "MOVE"],
         "builder": ["WORK", "CARRY", "MOVE"],
         "exc_harvester": ["WORK"],
+        "upkeep": ["WORK"],
     }
 
     module_costs_dict = {
@@ -251,6 +253,11 @@ function set_constants(spawner) {
             "WORK": 1,
             "MOVE": 1,
             "CARRY": 1,
+        },
+        "upkeep": {
+            "WORK": 1,
+            "MOVE": 1,
+            "CARRY": 2,
         }
     }
 
@@ -259,6 +266,7 @@ function set_constants(spawner) {
         "exc_harvester": "TRAVELLING_TO_SOURCE",
         "builder": "GETTING_ENERGY",
         "upgrader": "GETTING_ENERGY",
+        "upkeep": "GETTING_ENERGY",
     }
 }
 
