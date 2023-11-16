@@ -137,7 +137,7 @@ function buildSourceExtensions(creep) {
             // if the amount of energy in the room is enough to make a harvester, then you are allowed to take resources
             // from somewhere
 
-            if (creep.room.energyAvailable >= 700) {
+            if (creep.room.energyAvailable >= 800) {
                 creep.memory.state = 'GETTING_ENERGY';
             }
         }

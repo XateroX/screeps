@@ -23,6 +23,10 @@ var roleUpkeep = {
 
         // END META -------------------------------------------------------------
 
+        // if the room has too little energy
+        if (creep.room.energyAvailable < 800) {
+            creep.memory.state = 'GETTING_ENERGY';
+        }
 
         // based on state, execute behaviour
         if (state == 'UPKEEP_TOWER') {
@@ -151,7 +155,10 @@ function findAndUpkeepTowers(creep) {
         // if the creep is at the tower, transfer energy
         if (result == OK) {
             result = creep.transfer(creep.memory.upkeepTarget, RESOURCE_ENERGY);
-            //console.log("creep " + creep.name + " is transferring energy: " + result);
+            // if this results in the creep having no energy, set state to GETTING_ENERGY
+            if (creep.store.getUsedCapacity() == 0) {
+                creep.memory.state = 'GETTING_ENERGY';
+            }
         }
     } else {
         creep.memory.state = 'UPKEEP_WALL';
