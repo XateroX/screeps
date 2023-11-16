@@ -265,6 +265,10 @@ function findAndUpkeepWalls(creep) {
         if (result == OK) {
             result = creep.repair(creep.memory.upkeepTarget, RESOURCE_ENERGY);
             console.log("creep " + creep.name + " is repairing walls: " + result);
+            // if the creep runs out of energy, set state to GETTING_ENERGY
+            if (creep.store.getUsedCapacity() == 0) {
+                creep.memory.state = 'GETTING_ENERGY';
+            }
         }
     } else {
         creep.memory.state = 'UPKEEP_TOMBSTONE';
