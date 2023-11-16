@@ -134,13 +134,18 @@ function buildSourceExtensions(creep) {
 
         // if the creep is out of energy, set its state to GETTING_ENERGY
         if (creep.store[RESOURCE_ENERGY] == 0) {
-            creep.memory.state = 'GETTING_ENERGY';
-            //console.log("creep " + creep.name + " is out of energy");
+            // if the amount of energy in the room is enough to make a harvester, then you are allowed to take resources
+            // from somewhere
+
+            if (creep.room.energyAvailable >= 700) {
+                creep.memory.state = 'GETTING_ENERGY';
+            }
         }
     } else {
         //console.log("creep " + creep.name + " cannot find any construction sites")
     }
 
 }
+
 
 module.exports = roleBuilder
