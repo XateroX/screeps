@@ -184,7 +184,7 @@ var roleSpawner = {
         var extension_construction_sites = construction_sites.filter(site => site.structureType == STRUCTURE_EXTENSION);
         if (extension_construction_sites.length <= 1) {
             //createSourceConstructionSite(spawner);
-            pass
+            console.log("not building atm")
         }
     }
 };
