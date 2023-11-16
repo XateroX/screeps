@@ -73,42 +73,36 @@ function getEnergy(creep) {
             }
         }
     } else {
-        // if the spawner has some energy in it
-        if (creep.memory.energySource.store[RESOURCE_ENERGY] > 0) {
-            creep.memory.energySource = Game.spawns[creep.memory.spawner]
-            console.log("getting energy from spawn")
-        } else {
-            // check all extensions and see if any are empty
-            // if any are empty, set the target to that extension
-            // if none are empty, set the target to the spawn
-            var extensions = creep.room.find(FIND_MY_STRUCTURES, {
-                filter: { structureType: STRUCTURE_EXTENSION }
-            });
+        // check all extensions and see if any are empty
+        // if any are empty, set the target to that extension
+        // if none are empty, set the target to the spawn
+        var extensions = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: { structureType: STRUCTURE_EXTENSION }
+        });
 
-            extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+        extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 
-            if (extensions.length > 0) {
-                //console.log("there are extensions that need energy");
-                // find the nearest extension
-                creep.memory.energySource = extensions[0];
-                let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.energySource);
+        if (extensions.length > 0) {
+            //console.log("there are extensions that need energy");
+            // find the nearest extension
+            creep.memory.energySource = extensions[0];
+            let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.energySource);
 
-                for (let i = 0; i < extensions.length; i++) {
-                    let extension = extensions[i];
-                    let extensionDistance = creep.pos.getRangeTo(extension);
+            for (let i = 0; i < extensions.length; i++) {
+                let extension = extensions[i];
+                let extensionDistance = creep.pos.getRangeTo(extension);
 
-                    // if closest so far, set it as the target extension
-                    if (extensionDistance < targetExtensionDistance) {
-                        creep.memory.energySource = extension;
-                        targetExtensionDistance = extensionDistance;
-                    }
+                // if closest so far, set it as the target extension
+                if (extensionDistance < targetExtensionDistance) {
+                    creep.memory.energySource = extension;
+                    targetExtensionDistance = extensionDistance;
                 }
+            }
 
-                console.log("getting energy from extensions")
-            }
-            else {
-                creep.memory.energySource = Game.spawns[creep.memory.spawner];
-            }
+            console.log("getting energy from extensions")
+        }
+        else {
+            creep.memory.energySource = Game.spawns[creep.memory.spawner];
         }
     }
 
