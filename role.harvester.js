@@ -76,7 +76,7 @@ function getEnergy(creep) {
         let result = creep.harvest(creep.memory.targetSource);
         if (result == ERR_NOT_IN_RANGE) {
             let result = creep.moveTo(creep.memory.targetSource);
-            //console.log("creep " + creep.name + " is moving to source: " + result);
+            console.log("creep " + creep.name + " is moving to source: " + result);
         }
     }
     // if the creep is full, change its state to RETURNING_ENERGY
