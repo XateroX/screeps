@@ -343,6 +343,9 @@ function createSourceConstructionSite(spawner) {
     // remove all entries in open_spaces where terrain.get(space.x, space.y) = 1
     open_spaces = open_spaces.filter(space => terrain.get(space.x, space.y) == 0)
 
+    // remove all entries that are within 2 units of the source
+    open_spaces = open_spaces.filter(space => targetSource.pos.getRangeTo(space.x, space.y) >= 2)
+
     // if there are any open spaces
     if (open_spaces.length > 0) {
         // take one at random
