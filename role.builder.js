@@ -82,7 +82,7 @@ function getEnergy(creep) {
 
 
 
-        extensions = extensions.filter(extension => extension.store.getEnergy(RESOURCE_ENERGY) >= 0);
+        extensions = extensions.filter(extension => extension.store[RESOURCE_ENERGY] > 0);
 
         if (extensions.length > 0) {
             //console.log("there are extensions that need energy");
