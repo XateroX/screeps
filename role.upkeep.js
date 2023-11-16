@@ -230,7 +230,7 @@ function findAndUpkeepTowers(creep) {
 
 function findAndUpkeepWalls(creep) {
     // get all walls in the room
-    var walls = creep.room.find(FIND_MY_STRUCTURES, {
+    var walls = creep.room.find(FIND_STRUCTURES, {
         filter: { structureType: STRUCTURE_WALL }
     });
 
