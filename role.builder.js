@@ -18,8 +18,8 @@ var roleBuilder = {
         //    creep.memory.state = 'BUILDING_SPAWN_EXTENSIONS';
         //}
         // if the spawn is not full, set the state to BUILDING_SOURCE_EXTENSIONS
-        creep.memory.state = 'BUILDING_SOURCE_EXTENSIONS';
-        creep.memory.energySource = creep.memory.spawn;
+        //creep.memory.state = 'BUILDING_SOURCE_EXTENSIONS';
+        creep.memory.energySource = spawn;
 
         // END META -------------------------------------------------------------
 
@@ -72,17 +72,20 @@ function getEnergy(creep) {
                 currentContainerDistance = containerDistance;
             }
         }
+    } else {
+        creep.memory.energySource = Game.spawns[creep.memory.spawner]
+        console.log("getting energy from spawn")
     }
 
     // if the creep is not at the spawn, move to it
     let result = creep.withdraw(creep.memory.energySource, RESOURCE_ENERGY);
+    console.log("tried to withdraw with result: " + result)
     if (result == ERR_NOT_IN_RANGE) {
         let result = creep.moveTo(creep.memory.energySource);
         //console.log("creep " + creep.name + " is moving to spawn: " + result);
     }
     if (creep.store.getFreeCapacity() == 0) {
-        creep.memory.state = 'BUILDING_SPAWN_EXTENSIONS';
-        //console.log("creep " + creep.name + " is full");
+        creep.memory.state = 'BUILDING_SOURCE_EXTENSIONS';
     }
 }
 
