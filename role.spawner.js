@@ -223,7 +223,7 @@ function set_constants(spawner) {
         "harvester": ["WORK", "CARRY", "MOVE"],
         "builder": ["WORK", "CARRY", "MOVE"],
         "exc_harvester": ["WORK"],
-        "upkeep": ["WORK"],
+        "upkeep": ["WORK", "MOVE"],
     }
 
     module_costs_dict = {
