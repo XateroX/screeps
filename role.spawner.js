@@ -220,7 +220,7 @@ function set_constants(spawner) {
     // dict of module priorities for each role
     module_priority_dict = {
         "harvester": ["WORK", "CARRY", "MOVE"],
-        "builder": ["WORK", "MOVE"],
+        "builder": ["WORK", "CARRY", "MOVE"],
         "exc_harvester": ["WORK"],
     }
 
