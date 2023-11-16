@@ -234,7 +234,7 @@ function findAndUpkeepWalls(creep) {
     });
 
     // filter to those with less than 500 energy
-    walls = walls.filter(walls => walls.hits < 500);
+    walls = walls.filter(wall => wall.hits < 500);
 
     // if there are towers that need energy
     if (walls.length > 0) {
