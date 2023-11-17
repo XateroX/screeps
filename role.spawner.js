@@ -207,7 +207,7 @@ function set_constants(spawner) {
     spawner.memory.max_spawns = {
         'harvester': 7,
         'exc_harvester': 0,
-        'builder': 1,
+        'builder': 2,
         'upkeep': 2,
     };
     spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upkeep'];
