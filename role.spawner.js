@@ -51,7 +51,7 @@ let default_state_dict = {
 }
 
 function sum_module_costs(module_dict) {
-    total_cost = 0;
+    let total_cost = 0;
 
     for (let module in module_dict) {
         let count = module_dict[module];
@@ -136,7 +136,7 @@ var roleSpawner = {
                 }
 
                 // sum the costs in module_costs
-                total_module_cost = 0;
+                let total_module_cost = 0;
                 for (let i = 0; i < module_costs.length; i++) {
                     let cost = module_costs[i];
                     total_module_cost += cost;
@@ -144,7 +144,7 @@ var roleSpawner = {
 
                 // divide the spare resources by the total module cost to get the number of each module to add
                 // also max() the value so it cannot co below 0
-                amount_of_priority_modules = Math.max(Math.floor(spare_resources / total_module_cost), 0);
+                let amount_of_priority_modules = Math.max(Math.floor(spare_resources / total_module_cost), 0);
 
                 console.log("spare resources: " + spare_resources);
                 console.log("total module cost: " + total_module_cost);
