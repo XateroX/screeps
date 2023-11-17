@@ -114,7 +114,31 @@ function returnEnergy(creep) {
         }
     }
     else {
-        creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
+        // look for storages nearby and fill those instead
+        var storages = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: { structureType: STRUCTURE_STORAGE }
+        });
+
+        storages = storages.filter(storage => storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+
+        if (storages.length > 0) {
+            creep.memory.resourceTarget = storages[0];
+            let targetStorageDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+
+            for (let i = 0; i < storages.length; i++) {
+                let storage = storages[i];
+                let storageDistance = creep.pos.getRangeTo(storage);
+
+                // if closest so far, set it as the target extension
+                if (storageDistance < targetStorageDistance) {
+                    creep.memory.resourceTarget = storage;
+                    targetStorageDistance = storageDistance;
+                }
+            }
+        }
+        else {
+            creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
+        }
     }
 
     // if the creep is not at the target spawn, move to it

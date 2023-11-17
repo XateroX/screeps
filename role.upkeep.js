@@ -143,7 +143,6 @@ function getEnergy(creep) {
         });
 
 
-
         extensions = extensions.filter(extension => extension.store[RESOURCE_ENERGY] > 0);
 
         if (extensions.length > 0) {

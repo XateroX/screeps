@@ -190,14 +190,6 @@ var roleSpawner = {
                 }
             }
         }
-
-        // if no construction sites exist that are making extensions, make one more
-        var construction_sites = spawner.room.find(FIND_CONSTRUCTION_SITES);
-        var extension_construction_sites = construction_sites.filter(site => site.structureType == STRUCTURE_EXTENSION);
-        if (extension_construction_sites.length <= 1) {
-            createSourceConstructionSite(spawner);
-            console.log("not building atm")
-        }
     }
 };
 
