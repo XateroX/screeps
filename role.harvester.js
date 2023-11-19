@@ -90,32 +90,63 @@ function returnEnergy(creep) {
     // check all extensions and see if any are empty
     // if any are empty, set the target to that extension
     // if none are empty, set the target to the spawn
-    var extensions = creep.room.find(FIND_MY_STRUCTURES, {
-        filter: { structureType: STRUCTURE_EXTENSION }
+
+    // find the nearest container
+    var containers = creep.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_CONTAINER)
+        }
     });
 
-    extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+    // remove all empty containers
+    containers = containers.filter((container) => container.store[RESOURCE_ENERGY] > 0);
 
-    if (extensions.length > 0) {
-        //console.log("there are extensions that need energy");
-        // find the nearest extension
-        creep.memory.resourceTarget = extensions[0];
-        let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+    // if there are containers
+    if (containers.length > 0) {
+        // find the nearest container
+        creep.memory.resourceTarget = containers[0];
+        var currentContainerDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
 
-        for (let i = 0; i < extensions.length; i++) {
-            let extension = extensions[i];
-            let extensionDistance = creep.pos.getRangeTo(extension);
+        // find the nearest container
+        for (let i = 0; i < containers.length; i++) {
+            let container = containers[i];
+            let containerDistance = creep.pos.getRangeTo(container);
 
-            // if closest so far, set it as the target extension
-            if (extensionDistance < targetExtensionDistance) {
-                creep.memory.resourceTarget = extension;
-                targetExtensionDistance = extensionDistance;
+            // if closest so far, set it as the target source
+            if (containerDistance < currentContainerDistance) {
+                creep.memory.resourceTarget = container;
+                currentContainerDistance = containerDistance;
             }
         }
+    } else {
+        var extensions = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: { structureType: STRUCTURE_EXTENSION }
+        });
+
+        extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+
+        if (extensions.length > 0) {
+            //console.log("there are extensions that need energy");
+            // find the nearest extension
+            creep.memory.resourceTarget = extensions[0];
+            let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+
+            for (let i = 0; i < extensions.length; i++) {
+                let extension = extensions[i];
+                let extensionDistance = creep.pos.getRangeTo(extension);
+
+                // if closest so far, set it as the target extension
+                if (extensionDistance < targetExtensionDistance) {
+                    creep.memory.resourceTarget = extension;
+                    targetExtensionDistance = extensionDistance;
+                }
+            }
+        }
+        else {
+            creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
+        }
     }
-    else {
-        creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
-    }
+
 
     // if the creep is not at the target spawn, move to it
     let result = creep.moveTo(creep.memory.resourceTarget);
