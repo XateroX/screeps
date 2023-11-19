@@ -38,7 +38,7 @@ const roleColonist = {
 
             // if the gcl level too low, reserve the controller
             if (result == ERR_GCL_NOT_ENOUGH) {
-                let result = creep.reserveController(creep.room.controller);
+                result = creep.reserveController(creep.room.controller);
                 console.log("creep " + creep.name + " is reserving RCL: " + result);
             }
 
