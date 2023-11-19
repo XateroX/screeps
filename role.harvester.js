@@ -91,55 +91,56 @@ function returnEnergy(creep) {
     // if any are empty, set the target to that extension
     // if none are empty, set the target to the spawn
 
-    // find the nearest container
-    var containers = creep.room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_STORAGE)
-        }
+
+    var extensions = creep.room.find(FIND_MY_STRUCTURES, {
+        filter: { structureType: STRUCTURE_EXTENSION }
     });
 
-    // if there are containers
-    if (containers.length > 0) {
-        // find the nearest container
-        creep.memory.resourceTarget = containers[0];
-        var currentContainerDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+    extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 
-        // find the nearest container
-        for (let i = 0; i < containers.length; i++) {
-            let container = containers[i];
-            let containerDistance = creep.pos.getRangeTo(container);
+    if (extensions.length > 0) {
+        //console.log("there are extensions that need energy");
+        // find the nearest extension
+        creep.memory.resourceTarget = extensions[0];
+        let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
 
-            // if closest so far, set it as the target source
-            if (containerDistance < currentContainerDistance) {
-                creep.memory.resourceTarget = container;
-                currentContainerDistance = containerDistance;
+        for (let i = 0; i < extensions.length; i++) {
+            let extension = extensions[i];
+            let extensionDistance = creep.pos.getRangeTo(extension);
+
+            // if closest so far, set it as the target extension
+            if (extensionDistance < targetExtensionDistance) {
+                creep.memory.resourceTarget = extension;
+                targetExtensionDistance = extensionDistance;
             }
         }
-    } else {
-        var extensions = creep.room.find(FIND_MY_STRUCTURES, {
-            filter: { structureType: STRUCTURE_EXTENSION }
+    }
+    else {
+        // find the nearest container
+        var containers = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE)
+            }
         });
 
-        extensions = extensions.filter(extension => extension.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+        // if there are containers
+        if (containers.length > 0) {
+            // find the nearest container
+            creep.memory.resourceTarget = containers[0];
+            var currentContainerDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
 
-        if (extensions.length > 0) {
-            //console.log("there are extensions that need energy");
-            // find the nearest extension
-            creep.memory.resourceTarget = extensions[0];
-            let targetExtensionDistance = creep.pos.getRangeTo(creep.memory.resourceTarget);
+            // find the nearest container
+            for (let i = 0; i < containers.length; i++) {
+                let container = containers[i];
+                let containerDistance = creep.pos.getRangeTo(container);
 
-            for (let i = 0; i < extensions.length; i++) {
-                let extension = extensions[i];
-                let extensionDistance = creep.pos.getRangeTo(extension);
-
-                // if closest so far, set it as the target extension
-                if (extensionDistance < targetExtensionDistance) {
-                    creep.memory.resourceTarget = extension;
-                    targetExtensionDistance = extensionDistance;
+                // if closest so far, set it as the target source
+                if (containerDistance < currentContainerDistance) {
+                    creep.memory.resourceTarget = container;
+                    currentContainerDistance = containerDistance;
                 }
             }
-        }
-        else {
+        } else {
             creep.memory.resourceTarget = Game.spawns[creep.memory.spawner];
         }
     }
