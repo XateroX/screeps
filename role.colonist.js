@@ -1,7 +1,7 @@
 
 const roleColonist = {
     run: function (creep) {
-        if (!creep.memory.targetRoom || creep.memory.targetRoom == 'NONE') {
+        if (!creep.memory.targetRoom) {
             creep.memory.targetRoom = creep.room.name;
         }
 
