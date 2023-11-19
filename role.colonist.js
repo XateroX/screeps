@@ -2,7 +2,7 @@
 const roleColonist = {
     run: function (creep) {
         if (!creep.memory.targetRoom) {
-            creep.memory.targetRoom = creep.room.name;
+            creep.memory.targetRoom = "E53N19";//creep.room.name;
         }
         //console.log("BEGINNING");
         if (creep.room.name != creep.memory.targetRoom) {
