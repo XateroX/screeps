@@ -36,11 +36,19 @@ const roleColonist = {
             let result = creep.claimController(creep.room.controller);
             console.log(result + " while trying to claim")
 
+            // if the gcl level too low, reserve the controller
+            if (result == ERR_GCL_NOT_ENOUGH) {
+                let result = creep.reserveController(creep.room.controller);
+                console.log("creep " + creep.name + " is reserving RCL: " + result);
+            }
+
             // if too far away, move closer
             if (result == ERR_NOT_IN_RANGE) {
                 let result = creep.moveTo(creep.room.controller);
                 //console.log("creep " + creep.name + " is moving to RCL: " + result);
             }
+
+
         }
     }
 };
