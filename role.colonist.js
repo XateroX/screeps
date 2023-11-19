@@ -31,6 +31,16 @@ const roleColonist = {
 
             // move to the exit of the next movement
             result = creep.moveTo(creep.pos.findClosestByRange(creep.memory.movements[0].exit));
+        } else {
+            // attempt to claim the rcl
+            let result = creep.claimController(creep.room.controller);
+            console.log(result + " while trying to claim")
+
+            // if too far away, move closer
+            if (result == ERR_NOT_IN_RANGE) {
+                let result = creep.moveTo(creep.room.controller);
+                //console.log("creep " + creep.name + " is moving to RCL: " + result);
+            }
         }
     }
 };
