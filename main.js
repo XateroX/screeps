@@ -5,12 +5,14 @@ var roleExcHarvester = require('role.exc_harvester');
 var roleSpawner = require('role.spawner');
 var roleBuilder = require('role.builder');
 var roleUpkeep = require('role.upkeep');
+var roleColonist = require('role.colonist');
 
 let creepRoleMapping = {
     'harvester': roleHarvester,
     'builder': roleBuilder,
     'exc_harvester': roleExcHarvester,
     'upkeep': roleUpkeep,
+    'colonist': roleColonist
 }
 
 module.exports.loop = function () {

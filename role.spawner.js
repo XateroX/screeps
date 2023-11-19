@@ -209,8 +209,9 @@ function set_constants(spawner) {
         'exc_harvester': 0,
         'builder': 2,
         'upkeep': 2,
+        'colonist': 1,
     };
-    spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upkeep'];
+    spawner.memory.all_role_names = ['harvester', 'exc_harvester', 'builder', 'upkeep', 'colonist'];
 
     module_mapping = {
         "WORK": WORK,
@@ -221,6 +222,7 @@ function set_constants(spawner) {
     // dict of module priorities for each role
     module_priority_dict = {
         "harvester": ["WORK", "CARRY", "MOVE"],
+        "colonist": [],
         "builder": ["WORK", "CARRY", "MOVE"],
         "exc_harvester": ["WORK"],
         "upkeep": ["WORK", "MOVE"],
@@ -230,6 +232,7 @@ function set_constants(spawner) {
         "WORK": 100,
         "MOVE": 50,
         "CARRY": 50,
+        "CLAIM": 600,
     }
 
 
@@ -258,6 +261,10 @@ function set_constants(spawner) {
             "WORK": 1,
             "MOVE": 1,
             "CARRY": 2,
+        },
+        "colonist": {
+            "MOVE": 1,
+            "CLAIM": 1,
         }
     }
 
@@ -267,6 +274,7 @@ function set_constants(spawner) {
         "builder": "GETTING_ENERGY",
         "upgrader": "GETTING_ENERGY",
         "upkeep": "GETTING_ENERGY",
+        "colonist": "",
     }
 }
 
