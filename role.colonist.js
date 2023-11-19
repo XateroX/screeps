@@ -7,8 +7,8 @@ const roleColonist = {
 
         if (creep.room.name != creep.memory.targetRoom) {
             // using Game.map.findRoute() to get list of exits to go through to get to target room (only call this if creep.memory.movements is empty)
-            if (!creep.memory.movements || creep.memory.movements.length === 0) {
-                creep.memory.movements = Game.map.findRoute(creep.room, creep.memory.targetRoom);
+            if (!creep.memory.movements || creep.memory.movements.length == 0) {
+                creep.memory.movements = Game.map.findRoute(creep.room.name, creep.memory.targetRoom);
             }
 
             if (creep.room.name != creep.memory.movements[0].room) {
